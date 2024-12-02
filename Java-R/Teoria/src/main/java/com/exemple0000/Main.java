@@ -7,6 +7,6 @@ public class Main {
     public static void main(String[] args) {
         /* Escriure un missatge 
            al terminal */
-        System.out.println("Hola món!");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHH!");
     }
 }
