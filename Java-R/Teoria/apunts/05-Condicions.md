@@ -200,7 +200,7 @@ Per fer que quan s'executa el programa amb:
 Retorni el número més petit fent servir **l'operador ternari** amb una funció que es digui **minOfThree**
 
 ```java
-public static int minOfThree(float a, float b, float c)
+public static float minOfThree(float a, float b, float c)
 ```
 
 ```text
@@ -305,14 +305,14 @@ Per fer que quan s'executa el programa amb:
 ./run.sh com.exercici0505.Main
 ```
 
-Demani un mes de l'any i retorni el seu número amb la funció *"nomDelMes"*
+Demani un número de mes de l'any i retorni el seu nom amb la funció *"nomDelMes"*
 
 ```java
 public static String nomDelMes(int valor)
 ```
 
 ```text
-Escri un mes de l'any: Febrer
+Escri un número de mes de l'any: 2
 "Febrer" és el mes número 2
 ```
 
