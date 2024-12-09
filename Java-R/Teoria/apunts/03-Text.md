@@ -155,6 +155,13 @@ String text = "Aquest és un exemple";
 System.out.println("Longitud: " + text.length()); // 21
 ```
 
+Per repetir una cadena de text *X* vegades:
+
+```java
+// Escriu "*>*>*>", que és el patró "*>" tres vegades
+System.out.println("*>".repeat(3));
+```
+
 ## Subcadenes
 
 Per obtenir subcadenes de text es fa servir **substring**: 
@@ -443,16 +450,41 @@ Per fer que quan s'executa el programa amb:
 ./run.sh com.exercici0306.Main
 ```
 
-Fes un programa que demani tres paraules, i les mostri alineades a la dreta, centre i esquerra amb un espaiat de 10 espais per cada columna, i separa les columnes amb '|'.
+Fes un programa que demani dues paraules, i les mostri alineades a la dreta i esquerra amb un espaiat de 10 espais per cada columna, i separa les columnes amb '|'.
 
 Exemple de sortida:
 
 ```text
 Escriu la primera paraula: cotxe
-Escriu la segona paraula: moto
 Escriu la tercera paraula: kart
-0123456789|0123456789|0123456789
-     cotxe|   moto   |kart
+0123456789|0123456789
+     cotxe|kart
+```
+
+# Localització
+
+Cada país/cultura té la seva pròpia manera d'escriure els números decimals i les monedes. Per exemple:
+
+- Als EUA esriuen els decimals amb `.`: 2.25$ i 5.21€
+- A alguns països d'Europa amb `,`: 2,25$ i 5.21€
+
+Per simplificar l'escriptura farem servir el format americà, i per activar-lo:
+
+```java
+Scanner scanner = new Scanner(System.in);
+Locale localeUS = Locale.US;
+```
+
+Aleshores les sortides dels test amb números decimals, hauràn de ser amb **"System.out.printf"** enlloc de **"System.out.println"** per poder definir el locale:
+
+```java
+System.out.printf(localeUS, "El valor de %.2f€ són %.2f$%n", euros, dollars);
+```
+
+Altres locales s'obtenen amb: 
+
+```java
+Locale localeES = Locale.forLanguageTag("es")
 ```
 
 ### Exercici 0307
@@ -469,14 +501,17 @@ Per fer que quan s'executa el programa amb:
 ./run.sh com.exercici0307.Main
 ```
 
-Fes un programa que demani tres paraules, i les mostri alineades a la esquerra, dreta i dreata amb un espaiat de 8 espais per cada columna, i separa les columnes amb '|'.
+Fes un programa que mostri el número PI amb locale US i locale ES.
+
+Fes servir 10 decimals:
+
+```java
+%.10f
+```
 
 Exemple de sortida:
 
 ```text
-Escriu la primera paraula: cotxe
-Escriu la segona paraula: moto
-Escriu la tercera paraula: kart
-01234567|01234567|01234567
-cotxe   |    moto|    kart
+PI amb LocaleUS: 3.1415926536
+PI amb LocaleES: 3,1415926536
 ```

@@ -69,7 +69,11 @@ Per fer que quan s'executa el programa amb:
 ./run.sh com.exercici0400.Main
 ```
 
-Demani dues paraules a l'usuari i retorni la seva concatenació.
+Demani dues paraules a l'usuari i cridi a la funció **concatenaParaules** que retorna la seva concatenació amb un espai al mig.
+
+```java
+public static String concatenaParaules(String a, String b)
+```
 
 Exemple de sortida:
 ```text
@@ -207,7 +211,7 @@ La formúla és: *"ample * alt"*
 
 Exemple de sortida:
 ```text
-Amplada: 5.0 unitats
-Alçada: 3.0 unitats
+Amplada: 5.0
+Alçada: 3.0
 Àrea del rectangle: 15.0 unitats quadrades
 ```
