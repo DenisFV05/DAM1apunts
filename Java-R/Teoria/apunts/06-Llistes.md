@@ -16,7 +16,8 @@ Un array és una estructura de dades que permet emmagatzemar múltiples **elemen
 
 Els arrays **tenen una mida fixa** i els seus elements es poden accedir mitjançant un índex i `[x]`.
 
-La longitud d'un array s'obté amb **.length**
+- La longitud d'un array s'obté amb: **.length**
+- Per escriure el contingut d'un array: **Arrays.toString(nomArrray)**
 
 ### Exemple 0600
 
@@ -28,11 +29,16 @@ La longitud d'un array s'obté amb **.length**
 ```java
 package com.exemple0600;
 
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
         // Declaració i inicialització d'un array
         int[] numeros = {10, 20, 30, 40, 50};
+
+        // Escriure els elements
+        System.out.println("Array: " + Arrays.toString(numeros));
 
         // Accés a elements
         System.out.println("Element a l'índex [0]: " + numeros[0]);
@@ -517,6 +523,28 @@ Sense fer servir bucles, crea un Mixed-Map que contingui:
 
 Després, accedeix manualment a cadascuna de les claus i mostra el contingut.
 
+L'estructura és: 
+```java
+Hashmap<String, Hashmap<String, Object>>
+```
+```json
+{
+    "Anna": {
+        "edat": 30,
+        "esport": "futbol"
+    },
+    "Joan": {
+        "edat": 18,
+        "esport": "natació"
+    },
+    ...
+}
+```
+Anidar *"HasMap"* permet fer:
+```text
+.get("Anna").get("Edat")
+```
+
 Exemple de sortida:
 ```text
 Anna té 30 anys i practica futbol.
@@ -850,7 +878,7 @@ Fes un programa que guardi la següent informació en una combinació de **Array
 | Max      | Cavall   | 500 |   30|
 | Luna     | Gat      |   4 |   15|
 | Rocky    | Tortuga  | 150 |  100|
-| Polly    | Loro     |   1 |   50|
+| Alita    | Loro     |   1 |   50|
 ```
 Finalment, mostra el resultat d'ordenar la llista segons:
 
@@ -870,7 +898,7 @@ Per exemple:
 > Ordenats per "pes"
 | Nom      | Espècie  | Pes | A.V |
 |----------|----------|-----|-----|
-| Polly    | Loro     |   1 |   50|
+| Alita    | Loro     |   1 |   50|
 | Luna     | Gat      |   4 |   15|
 | Pelut    | Gos      |   6 |   12|
 | Rocky    | Tortuga  | 150 |  100|
@@ -1029,7 +1057,7 @@ Fes un programa que guardi la següent informació en una combinació de **Array
 | Max      | Cavall   | 500 |   30|
 | Luna     | Gat      |   4 |   15|
 | Rocky    | Tortuga  | 150 |  100|
-| Polly    | Loro     |   1 |   50|
+| Alita    | Loro     |   1 |   50|
 ```
 Finalment:
 
