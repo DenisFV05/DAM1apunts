@@ -1,0 +1,122 @@
+[
+    {
+        "cognoms": "Alex Poma",
+        "telefon": "625128863",
+        "idUsuari": 1,
+        "nom": "Alex"
+    },
+    {
+        "cognoms": "Fernandez Lozano",
+        "telefon": 612345678,
+        "idUsuari": 2,
+        "nom": "Irene"
+    },
+    {
+        "cognoms": "Paco Juan",
+        "telefon": 678123456,
+        "idUsuari": 3,
+        "nom": "Javi"
+    },
+    {
+        "cognoms": "Sanchez Marin",
+        "telefon": 651234987,
+        "idUsuari": 4,
+        "nom": "Lucia"
+    },
+    {
+        "cognoms": "Hernandez Pardo",
+        "telefon": 620987654,
+        "idUsuari": 5,
+        "nom": "Ruben"
+    },
+    {
+        "cognoms": "Navarro Ortega",
+        "telefon": 699876543,
+        "idUsuari": 6,
+        "nom": "Sara"
+    },
+    {
+        "cognoms": "Gonzalez Guerra",
+        "telefon": 690123987,
+        "idUsuari": 7,
+        "nom": "Mario"
+    },
+    {
+        "cognoms": "Cachinero Romero",
+        "telefon": 600456789,
+        "idUsuari": 8,
+        "nom": "Marc"
+    },
+    {
+        "cognoms": "Vega Cano",
+        "telefon": 610987123,
+        "idUsuari": 9,
+        "nom": "Pablo"
+    },
+    {
+        "cognoms": "Castillo Soria",
+        "telefon": 611234789,
+        "idUsuari": 10,
+        "nom": "Elena"
+    },
+    {
+        "cognoms": "Alvarez Montes",
+        "telefon": 629876321,
+        "idUsuari": 11,
+        "nom": "Hugo"
+    },
+    {
+        "cognoms": "Conesa Cerezo",
+        "telefon": 647890123,
+        "idUsuari": 12,
+        "nom": "Paula"
+    },
+    {
+        "cognoms": "Lorenzo Pena",
+        "telefon": "600123654",
+        "idUsuari": 13,
+        "nom": "Alvaro"
+    },
+    {
+        "cognoms": "Reyes Moreno",
+        "telefon": 671234876,
+        "idUsuari": 14,
+        "nom": "Nuria"
+    },
+    {
+        "cognoms": "Fuentes Serrano",
+        "telefon": 680987345,
+        "idUsuari": 15,
+        "nom": "Raul"
+    },
+    {
+        "cognoms": "Bermudez Carmona",
+        "telefon": 625128863,
+        "idUsuari": 16,
+        "nom": "Alex"
+    },
+    {
+        "cognoms": "Motos Gasoil",
+        "telefon": 686530293,
+        "idUsuari": 17,
+        "nom": "Pablo"
+    },
+    {
+        "cognoms": "Paz Guiterrez",
+        "telefon": 672083623,
+        "idUsuari": 18,
+        "nom": "Paula"
+    },
+    {
+        "cognoms": "Montaner Gavin",
+        "telefon": 625112932,
+        "idUsuari": 19,
+        "nom": "Julia"
+    },
+    {
+        "cognoms": "Veluga Mora",
+        "telefon": 629088329,
+        "idUsuari": 20,
+        "nom": "Lugo"
+    }
+]

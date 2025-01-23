@@ -1,0 +1,117 @@
+[
+    {
+        "titol": "Don Quijote de la Mancha",
+        "idLlibre": 1,
+        "autor": ["Miguel de Cervantes"]
+    },
+    {
+        "titol": "La sombra del viento",
+        "idLlibre": 2,
+        "autor": ["Carlos Ruiz Zafon"]
+    },
+    {
+        "titol": "El ultimo Caton",
+        "idLlibre": 3,
+        "autor": [
+            "Matilde Asensi",
+            "Jesus Asensi"
+        ]
+    },
+    {
+        "titol": "Los renglones torcidos de Dios",
+        "idLlibre": 4,
+        "autor": ["Torcuato Luca de Tena"]
+    },
+    {
+        "titol": "El desafio etico: Politica, justicia y paz",
+        "idLlibre": 5,
+        "autor": [
+            "Adela Cortina",
+            "Jesus Conill"
+        ]
+    },
+    {
+        "titol": "La Celestina",
+        "idLlibre": 6,
+        "autor": ["Fernando de Rojas"]
+    },
+    {
+        "titol": "El Diablo Ilustrado",
+        "idLlibre": 7,
+        "autor": [
+            "Angel Santiesteban",
+            "Alejandro Gutierrez"
+        ]
+    },
+    {
+        "titol": "Patria",
+        "idLlibre": 8,
+        "autor": ["Fernando Aramburu"]
+    },
+    {
+        "titol": "Nada",
+        "idLlibre": 9,
+        "autor": ["Carmen Laforet"]
+    },
+    {
+        "titol": "La sonrisa etrusca",
+        "idLlibre": 10,
+        "autor": [
+            "Jose Luis Sampedro",
+            "Olga Lucas"
+        ]
+    },
+    {
+        "titol": "Rimas y leyendas",
+        "idLlibre": 11,
+        "autor": ["Gustavo Adolfo Becquer"]
+    },
+    {
+        "titol": "Manual del perfecto idiota iberoamericano",
+        "idLlibre": 12,
+        "autor": [
+            "Carlos Alberto Montaner",
+            "Placido Arango"
+        ]
+    },
+    {
+        "titol": "El sombrero de tres picos",
+        "idLlibre": 13,
+        "autor": ["Pedro Antonio de Alarcon"]
+    },
+    {
+        "titol": "Tierra de campos",
+        "idLlibre": 14,
+        "autor": ["David Trueba"]
+    },
+    {
+        "titol": "La buena suerte",
+        "idLlibre": 15,
+        "autor": ["Rosa Montero"]
+    },
+    {
+        "titol": "Lola Lolita",
+        "idLlibre": 16,
+        "autor": ["Juaking Mango"]
+    },
+    {
+        "titol": "Alfonsteca Karateka",
+        "idLlibre": 17,
+        "autor": ["Luouise Misse"]
+    },
+    {
+        "titol": "Solecito Fresquito",
+        "idLlibre": 18,
+        "autor": ["Mariona Cross"]
+    },
+    {
+        "titol": "2 Peines",
+        "idLlibre": 19,
+        "autor": ["Kiko Mortero"]
+    },
+    {
+        "titol": "Mucha Miel",
+        "idLlibre": 20,
+        "autor": ["Juaquin Gustamande"]
+    }
+]
