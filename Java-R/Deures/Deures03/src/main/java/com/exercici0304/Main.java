@@ -1,53 +1,44 @@
-package com.project;
+package com.exercici0304;
 
-import java.math.BigDecimal;
-import java.sql.*;
 import java.util.Locale;
 
 public class Main {
-
-    private static String URL = "jdbc:mysql://localhost:3308/videogame_park?useSSL=false&allowPublicKeyRetrieval=true";
-    private static String USER = "root";
-    private static String PASSWORD = "pwd";
-
     public static void main(String[] args) {
-
+        Locale defaultLocale = Locale.getDefault();
         Locale.setDefault(Locale.US);
 
-        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            conn.setAutoCommit(false); // Important per controlar manualment les transaccions
+        /*
+        TODO Modifica el codi de NumComplex.java 
+        per tal que funcioni aquest main
 
-            crearTaules(conn);
-            afegirArea(conn, "Zona Arcade", "Arcade", 100);
-            afegirArea(conn, "Zona VR", "Realitat Virtual", 50);
-            afegirTarifa(conn, "Passi Bàsic", new BigDecimal("19.99"), 1);
-            afegirTarifa(conn, "Passi Premium", new BigDecimal("39.99"), 3);
+        try {
+            NumComplex num1 = new NumComplex(3, 4);
+            NumComplex num2 = new NumComplex(1, -2);
 
-            int idZonaArcade = obtenirIdAreaPerNom(conn, "Zona Arcade");
-            int idZonaVR = obtenirIdAreaPerNom(conn, "Zona VR");
-            int idPassiBasic = obtenirIdTarifaPerNom(conn, "Passi Bàsic");
-            int idPassiPremium = obtenirIdTarifaPerNom(conn, "Passi Premium");
+            System.out.println("Número complex 1: " + num1);
+            System.out.println("Número complex 2: " + num2);
 
-            definirAccesAreaTarifa(conn, idZonaArcade, idPassiBasic);
-            definirAccesAreaTarifa(conn, idZonaArcade, idPassiPremium);
-            definirAccesAreaTarifa(conn, idZonaVR, idPassiPremium);
+            System.out.println("\nMòdul de num1: " + num1.modul());
+            System.out.println("Conjugat de num1: " + num1.conjugat());
 
-            conn.commit(); // Confirmar totes les operacions al final
+            NumComplex suma = NumComplex.suma(num1, num2);
+            System.out.println("\nSuma: " + suma);
 
-            llistarArees(conn);
-            llistarTarifes(conn);
-            llistarTarifesPerAccesArea(conn, idZonaArcade);
-            llistarAreesAccesiblesPerTarifa(conn, idPassiBasic);
-            llistarAreesAccesiblesPerTarifa(conn, idPassiPremium);
+            NumComplex resta = NumComplex.resta(num1, num2);
+            System.out.println("Resta: " + resta);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            NumComplex multiplica = NumComplex.multiplica(num1, num2);
+            System.out.println("Multiplicació: " + multiplica);
+
+            try {
+                NumComplex divideix = NumComplex.divideix(num1, num2);
+                System.out.println("Divisió: " + divideix);
+            } catch (ArithmeticException e) {
+                System.out.println("Error en la divisió: " + e.getMessage());
+            }
+        } finally {
+            Locale.setDefault(defaultLocale);
         }
-
-        // Forçar la sortida del programa per no esperar a tancar la connexió amb 'MySQL'
-        // Assegura't que en aquest punt totes les dades s'han guardat correctament
-        if (!"test".equals(System.getProperty("environment"))) {
-            System.exit(0);
-        }
+        */
     }
 }

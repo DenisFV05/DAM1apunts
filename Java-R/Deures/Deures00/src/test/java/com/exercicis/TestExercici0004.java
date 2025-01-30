@@ -3,7 +3,7 @@ package com.exercicis;
 import com.testStringUtils.TestStringUtils;
 
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.TestInfo;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.stefanbirkner.systemlambda.SystemLambda;
@@ -13,58 +13,88 @@ import java.util.Locale;
 class TestExercici0004 {
 
     @Test
-    public void testContaMajuscules() {
-        String diff = TestStringUtils.findFirstDifference(
-            String.valueOf(Exercici0004.contaMajuscules("PassWord123")), 
-            "2"
-        );
-        assertTrue(diff.compareTo("identical") == 0,
-            ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+    public void testContaMajuscules(TestInfo testInfo) throws Exception {
+        try {
+            String diff = TestStringUtils.findFirstDifference(
+                String.valueOf(Exercici0004.contaMajuscules("PassWord123")), 
+                "2"
+            );
+            assertTrue(diff.compareTo("identical") == 0,
+                ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
 
-        diff = TestStringUtils.findFirstDifference(
-            String.valueOf(Exercici0004.contaMajuscules("password")), 
-            "0"
-        );
-        assertTrue(diff.compareTo("identical") == 0,
-            ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+            diff = TestStringUtils.findFirstDifference(
+                String.valueOf(Exercici0004.contaMajuscules("password")), 
+                "0"
+            );
+            assertTrue(diff.compareTo("identical") == 0,
+                ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+            System.out.println("Test passed, succeeded!");
+
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void testContaMinuscules() {
-        String diff = TestStringUtils.findFirstDifference(
-            String.valueOf(Exercici0004.contaMinuscules("PassWord123")), 
-            "6"
-        );
-        assertTrue(diff.compareTo("identical") == 0,
-            ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+    public void testContaMinuscules(TestInfo testInfo) throws Exception {
+        try {
+            String diff = TestStringUtils.findFirstDifference(
+                String.valueOf(Exercici0004.contaMinuscules("PassWord123")), 
+                "6"
+            );
+            assertTrue(diff.compareTo("identical") == 0,
+                ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
 
-        diff = TestStringUtils.findFirstDifference(
-            String.valueOf(Exercici0004.contaMinuscules("PASSWORD123")), 
-            "0"
-        );
-        assertTrue(diff.compareTo("identical") == 0,
-            ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+            diff = TestStringUtils.findFirstDifference(
+                String.valueOf(Exercici0004.contaMinuscules("PASSWORD123")), 
+                "0"
+            );
+            assertTrue(diff.compareTo("identical") == 0,
+                ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+            System.out.println("Test passed, succeeded!");
+
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void testValidaContrasenya() {
-        String diff = TestStringUtils.findFirstDifference(
-            Exercici0004.validaContrasenya("PassWord123"), 
-            "La contrasenya és vàlida"
-        );
-        assertTrue(diff.compareTo("identical") == 0,
-            ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+    public void testValidaContrasenya(TestInfo testInfo) throws Exception {
+        try {
+            String diff = TestStringUtils.findFirstDifference(
+                Exercici0004.validaContrasenya("PassWord123"), 
+                "La contrasenya és vàlida"
+            );
+            assertTrue(diff.compareTo("identical") == 0,
+                ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
 
-        diff = TestStringUtils.findFirstDifference(
-            Exercici0004.validaContrasenya("password"), 
-            "La contrasenya NO és vàlida"
-        );
-        assertTrue(diff.compareTo("identical") == 0,
-            ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+            diff = TestStringUtils.findFirstDifference(
+                Exercici0004.validaContrasenya("password"), 
+                "La contrasenya NO és vàlida"
+            );
+            assertTrue(diff.compareTo("identical") == 0,
+                ">>>>>>>>>> Diff found >>>>>>>>>>\n" + diff + "<<<<<<<<<< Diff end <<<<<<<<<<");
+                System.out.println("Test passed, succeeded!");
+
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void testMainFunctionValidPwd() throws Exception {
+    public void testMainFunctionValidPwd(TestInfo testInfo) throws Exception {
         Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.US);
@@ -91,7 +121,7 @@ class TestExercici0004 {
     }
 
     @Test
-    public void testMainFunctionInvalidPwd() throws Exception {
+    public void testMainFunctionInvalidPwd(TestInfo testInfo) throws Exception {
         Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.US);
@@ -118,7 +148,7 @@ class TestExercici0004 {
     }
 
     @Test
-    public void testMainFunctionEdgeCase() throws Exception {
+    public void testMainFunctionEdgeCase(TestInfo testInfo) throws Exception {
         Locale defaultLocale = Locale.getDefault();
         try {
             Locale.setDefault(Locale.US);

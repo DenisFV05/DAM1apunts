@@ -1,102 +1,41 @@
-package com.project;
+package com.exercici0302;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Locale;
+import java.util.ArrayList;
 
 public class Main {
-
     public static void main(String[] args) {
 
-        Locale.setDefault(Locale.US);
+        /* TODO A mida que hagis completat "Autor", "Llibre"
+           i "Prestec", ves descomentant aquest codi
+           per validar el funcionament dels objectes
 
-        AppData db = AppData.getInstance();
+        // Creació d'autors
+        Autor autor1 = new Autor("Gabriel García Márquez", "Colombiana");
+        Autor autor2 = new Autor("J.K. Rowling", "Britànica");
 
-        // Crear les taules
-        crearTaules();
+        // Creació de llibres
+        Llibre llibre1 = new Llibre("Cien años de soledad", autor1, 1967);
+        Llibre llibre2 = new Llibre("Harry Potter y la piedra filosofal", autor2, 1997);
 
-        // Afegir Professors
-        afegirProfessor("Maria Garcia", "Matemàtiques");
-        int idMaria = obtenirIdProfessorPerNom("Maria Garcia");
+        // Creació de Prestecs
+        Prestec prestec1 = new Prestec(llibre1, "01/01/2024", "31/01/2024");
+        Prestec prestec2 = new Prestec(llibre2, "15/01/2024", "15/02/2024");
 
-        afegirProfessor("Jordi Pozo", "Literatura");
-        int idJordi = obtenirIdProfessorPerNom("Jordi Pozo");
+        // Llista de Prestecs per gestionar
+        List<Prestec> prestecs = new ArrayList<>();
+        prestecs.add(prestec1);
+        prestecs.add(prestec2);
 
-        afegirProfessor("Anna Molina", "Ciències");
-        int idAnna = obtenirIdProfessorPerNom("Anna Molina");
-
-        // Afegir Aules
-        afegirAula("A101", 30);
-        afegirAula("A102", 25);
-        afegirAula("B201", 20);
-
-        // Afegir Assignatures
-        if (idMaria != -1) {
-            afegirAssignatura("Algebra", 4, idMaria);
+        // Mostrar informació dels Prestecs i validar si estan en termini
+        for (Prestec prestec : prestecs) {
+            Llibre llibre = prestec.getLlibre();
+            Autor autor = llibre.getAutor();
+            System.out.println("Llibre: " + llibre.getTitol() + " - Autor: " + autor.getNom() + " (" + autor.getNacionalitat() + ")");
+            System.out.println("Data de Prestec: " + prestec.getDataPrestec() + " - Data de retorn: " + prestec.getDataRetorn());
+            System.out.println("Està en termini? " + prestec.estaEnTermini());
+            System.out.println("-----");
         }
-        int idAlgebra = obtenirIdAssignaturaPerNom("Algebra");
-
-        if (idJordi != -1) {
-            afegirAssignatura("Literatura Catalana", 3, idJordi);
-        }
-        int idLiteraturaCatalana = obtenirIdAssignaturaPerNom("Literatura Catalana");
-
-        if (idAnna != -1) {
-            afegirAssignatura("Biologia", 5, idAnna);
-        }
-        int idBiologia = obtenirIdAssignaturaPerNom("Biologia");
-
-        // Afegir Alumnes
-        afegirAlumne("Marc", "Soler", Date.valueOf("2005-03-15"));
-        int idMarc = obtenirIdAlumnePerNom("Marc", "Soler");
-
-        afegirAlumne("Laura", "Vidal", Date.valueOf("2004-07-22"));
-        int idLaura = obtenirIdAlumnePerNom("Laura", "Vidal");
-
-        afegirAlumne("Iván", "Coll", Date.valueOf("2004-06-10"));
-        int idIvan = obtenirIdAlumnePerNom("Iván", "Coll");
-
-        // Inscripcions, comprovant que tant els alumnes com les assignatures existeixen
-        if (idMarc != -1 && idAlgebra != -1) {
-            inscriureAlumneAssignatura(idMarc, idAlgebra);
-        }
-        if (idLaura != -1 && idLiteraturaCatalana != -1) {
-            inscriureAlumneAssignatura(idLaura, idLiteraturaCatalana);
-        }
-        if (idIvan != -1) {
-            if (idAlgebra != -1) inscriureAlumneAssignatura(idIvan, idAlgebra);
-            if (idLiteraturaCatalana != -1) inscriureAlumneAssignatura(idIvan, idLiteraturaCatalana);
-            if (idBiologia != -1) inscriureAlumneAssignatura(idIvan, idBiologia);
-        }
-
-
-        // Llistar informació
-        System.out.println("Professors:");
-        llistarProfessors();
-
-        System.out.println("\nAssignatures:");
-        llistarAssignatures();
-
-        System.out.println("\nAules:");
-        llistarAules();
-
-        System.out.println("\nAssignatures:");
-        llistarAssignaturesAlumne(1);
-        llistarAssignaturesAlumne(3);
-
-        System.out.println("\nAlumnes per assignatura:");
-        llistarAlumnesAssignatura(1);
-        llistarAlumnesAssignatura(2);
-        llistarAlumnesAssignatura(3);
-
-        // Tancar la connexió amb la base de dades
-        db.close();
-
-        // Forçar la sortida del programa per no esperar a tancar la connexió amb 'MySQL'
-        // Assegura't que en aquest punt totes les dades s'han guardat correctament
-        if (!"test".equals(System.getProperty("environment"))) {
-            System.exit(0);
-        }
+        */
     }
 }
