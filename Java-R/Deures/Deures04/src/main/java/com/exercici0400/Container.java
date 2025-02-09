@@ -31,6 +31,29 @@ public class Container extends Component {
         return rst;
     } 
 
+    private ArrayList<String> addBorder(ArrayList<String> buffCmp) {
+        ArrayList<String> rst = new ArrayList<>();
+
+        for (int cntLine = 0; cntLine < buffCmp.size(); cntLine = cntLine + 1) {
+            String line = buffCmp.get(cntLine);
+            if (cntLine == 0) {
+                // Primea linia
+                line = "┌" + "─".repeat(line.length() - 2) + "┐";
+            } else if (cntLine == (buffCmp.size() - 1)) {
+                // Última linia
+                line = "└" + "─".repeat(line.length() - 2) + "┘";
+            } else {
+                char[] arr = line.toCharArray();
+                arr[0] = '│';
+                arr[arr.length - 1] = '│';
+                line = String.valueOf(arr);
+            }
+            rst.add(line);
+        }
+
+        return rst;
+    } 
+
     public void draw() {
         ArrayList<String> buffer;
 
@@ -39,13 +62,16 @@ public class Container extends Component {
         // Inicia el buffer amb espais blancs
         buffer = new ArrayList<>();
         for (int cnt = 0; cnt < height; cnt = cnt + 1) {
-            String linia = "x".repeat(width);
+            String linia = " ".repeat(width);
             buffer.add(linia);
         }
 
         // Dibuixa els components al buffer
         for (Component cmp : components) {
             ArrayList<String> buffCmp = cmp.render();
+
+            buffCmp = addBorder(buffCmp);
+
             int posY = cmp.getY();
             for (String lineCmp : buffCmp) {
                 if (posY < height) {
