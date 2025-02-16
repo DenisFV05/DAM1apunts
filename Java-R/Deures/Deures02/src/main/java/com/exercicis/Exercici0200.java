@@ -2,12 +2,21 @@ package com.exercicis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Exercici0200 {
+
+    public static Scanner scanner;
+    public static Locale defaultLocale;
+
+    // ./run.sh com.exercicis.Exercici0200
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
+        defaultLocale = Locale.getDefault();
+        Locale.setDefault(Locale.US);
 
         System.out.println(addImaginaries("1+2i", "4+5i"));
 
@@ -51,7 +60,33 @@ public class Exercici0200 {
         System.out.println(findUniqueNumber(new ArrayList<>(Arrays.asList(2.0, 2.0, 1.0))));
         System.out.println(findUniqueNumber(new ArrayList<>(Arrays.asList(4.0, 1.0, 2.0, 1.0, 2.0))));
 
+        Locale.setDefault(defaultLocale);
         scanner.close();
+    }
+
+    /**
+     * Retorna la part real d'un número imaginari
+     * 
+     * @param num cadena de text amb el número imaginari
+     * @return la part real del número imaginari
+     */
+    private static int getImaginaryReal(String num) {
+        // Cerca l'últim "+" (en cas de números negatius)
+        // Si no hi ha "+", busca "-"
+        // La part real és tot abans d'aquest índex
+        return 0; 
+    }
+
+    /**
+     * Retorna la part imaginària d'un número imaginari
+     * 
+     * @param num cadena de text amb el número imaginari
+     * @return la part imaginària del número imaginari
+     */
+    private static int getImaginary(String num) {
+        // Cerca el signe de la part imaginària
+        // Extreu la part imaginària
+        return 0; 
     }
 
     /**
@@ -77,6 +112,7 @@ public class Exercici0200 {
 
     /**
      * Fes un programa que dibuixi el triangle de pascal
+     * fins a un nivell n, sense espais al final de cada fila
      * 
      * @param int nivells del triangle (0 fins a n)
      * 
@@ -87,7 +123,6 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testDrawPascalFive
      */
     public static void drawPascal(int n) {
-
     }
 
     /**
@@ -104,7 +139,8 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testAddListDecimals
      */
     public static double addList(ArrayList<Double> list) {
-        return 0.0;
+        double rst = 0.0;
+        return rst;
     }
 
     /** 
@@ -121,7 +157,6 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testPrintMatrixEmpty
      */
     public static void printMatrix(int[][] matrix) {
-
     }
 
     /**
@@ -244,7 +279,7 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testSumaSenseSumarZero
      * @test ./runTest.sh com.exercicis.TestExercici0200#testSumaSenseSumarLargeNumbers
      */
-    public static int sumaSenseSumar(int a, int b) {
+    public static int sumaSenseSumar(int a, int b) {       
         return 0;
     }
 
