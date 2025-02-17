@@ -1,5 +1,6 @@
 package com.exercicis;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,13 +8,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class Exercici0201 {
 
     public static Scanner scanner;
     public static Locale defaultLocale;
 
+    // ./run.sh com.exercicis.Exercici0201
     public static void main(String[] args) {
         
         scanner = new Scanner(System.in);
@@ -121,7 +122,6 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testFiltraArrayParaulesAmbA
      */
     public static void filtraArrayParaulesAmbA() {
-
     }
        
     /**
@@ -136,8 +136,7 @@ public class Exercici0201 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0201#testFiltraLlistaParaulesAmbA
      */
-    public static void filtraLlistaParaulesAmbA() {
-
+    static void filtraLlistaParaulesAmbA() {       
     }
 
     /**
@@ -149,7 +148,7 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testGeneraArrayDecimals
      */
     public static double[] generaArrayDecimals(int mida) {
-        double[] rst = new double[0];
+        double[] rst = new double[mida];
         return rst;
     }
 
@@ -268,9 +267,9 @@ public class Exercici0201 {
     }
 
     /**
-     * Ordena un HashMap per les claus mitjançant un TreeMap i mostra el resultat.
+     * Ordena un HashMap per les clausi mostra el resultat.
      * 
-     * Es crea un HashMap amb elements (Banana=3, Poma=5, Taronja=2) i es transfereix a un TreeMap
+     * Es crea un HashMap amb elements (Banana=3, Poma=5, Taronja=2) 
      * per obtenir un ordre natural de les claus (alfabètic).
      * 
      * 
