@@ -6,6 +6,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.exercicis.Exercici0201;
 import com.github.stefanbirkner.systemlambda.SystemLambda;
 import com.testStringUtils.TestStringUtils;
 
@@ -336,10 +338,7 @@ class TestExercici0201 {
             // Valida el resultat esperat
             String expected = """
                 Introdueix una frase:
-                Freqüència de paraules:
-                hello=2
-                world=1
-                """.trim().replace("\r\n", "\n");
+                Freqüència de paraules: {world=1, hello=2}""".trim().replace("\r\n", "\n");
     
             // Comparació amb TestStringUtils.findFirstDifference()
             String diff = TestStringUtils.findFirstDifference(output, expected);
@@ -410,19 +409,25 @@ class TestExercici0201 {
     }
     
     @Test
-    void testOrdenarMapaPerClaus(TestInfo testInfo) throws Exception {
+    void testCalcularEstadistiquesNotesEstudiants(TestInfo testInfo) {
         try {
-            // Captura la sortida de la funció
-            String output = SystemLambda.tapSystemOut(() -> Exercici0201.ordenarMapaPerClaus()).trim().replace("\r\n", "\n");
+            HashMap<String, Double> notes = new HashMap<>();
+            notes.put("Anna", 7.5);
+            notes.put("Joan", 9.0);
+            notes.put("Pere", 5.8);
+            notes.put("Maria", 8.2);
+            notes.put("Carla", 6.7);
     
-            // Valida el resultat esperat
-            String expected = """
-                Mapa ordenat per claus: {Banana=3, Poma=5, Taronja=2}
-                """.trim().replace("\r\n", "\n");
+            // Captura la sortida de consola
+            String output = SystemLambda.tapSystemOut(() -> {
+                Exercici0201.calcularEstadistiquesNotesEstudiants(notes);
+            }).trim().replace("\r\n", "\n");
     
-            // Comparació amb TestStringUtils.findFirstDifference()
+            String expected = "Mitjana: 7.44, Màxim: 9.0, Mínim: 5.8";
+    
+            // Comparació amb TestStringUtils
             String diff = TestStringUtils.findFirstDifference(output, expected);
-            assertTrue(diff.compareTo("identical") == 0, 
+            assertTrue(diff.equals("identical"),
                 ">>>>>>>>>> Diff found >>>>>>>>>\n" + diff + "<<<<<<<<< Diff end <<<<<<<<<<<\n");
     
             System.out.println("Test passed, succeeded!");
@@ -434,30 +439,5 @@ class TestExercici0201 {
             e.printStackTrace();
         }
     }
-    
-    @Test
-    void testCalcularEstadistiquesNotesEstudiants(TestInfo testInfo) throws Exception {
-        try {
-            // Captura la sortida de la funció
-            String output = SystemLambda.tapSystemOut(() -> Exercici0201.calcularEstadistiquesNotesEstudiants()).trim().replace("\r\n", "\n");
-    
-            // Valida el resultat esperat
-            String expected = """
-                Mitjana: 7.333333333333333, Màxim: 8.5, Mínim: 6.0
-                """.trim().replace("\r\n", "\n");
-    
-            // Comparació amb TestStringUtils.findFirstDifference()
-            String diff = TestStringUtils.findFirstDifference(output, expected);
-            assertTrue(diff.compareTo("identical") == 0, 
-                ">>>>>>>>>> Diff found >>>>>>>>>\n" + diff + "<<<<<<<<< Diff end <<<<<<<<<<<\n");
-    
-            System.out.println("Test passed, succeeded!");
-        } catch (AssertionError e) {
-            System.out.println("Test failed: " + testInfo.getDisplayName());
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
-            e.printStackTrace();
-        }
-    }    
+
 }
