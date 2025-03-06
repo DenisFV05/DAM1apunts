@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -42,8 +43,8 @@ public class Exercici0203 {
             System.out.println(getMonumentValue(monuments.get(2), "any"));
             System.out.println(getMonumentValue(monuments.get(2), "longitud"));
 
-            System.out.println(getCoordsString((monuments.get(2))));
-            taulaMonuments(monuments);
+            //System.out.println(getCoordsString((monuments.get(2))));
+            //taulaMonuments(monuments);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -216,8 +217,9 @@ public class Exercici0203 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0203#testIsValidValue
      */
-    private static boolean isValid(String value, String[] validValues) {
-        return false;
+    public static boolean isValid(String value, String[] validValues) {
+        if (validValues.length == 0) return false;
+        return Arrays.asList(validValues).indexOf(value) != -1;
     }
 
     /**
@@ -233,7 +235,25 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testOrdenaMonuments
      */
     public static ArrayList<HashMap<String, Object>> ordenaMonuments(ArrayList<HashMap<String, Object>> monuments, String sortKey) throws IllegalArgumentException {
-        ArrayList<HashMap<String, Object>> rst = new ArrayList<>();    
+        ArrayList<HashMap<String, Object>> rst = new ArrayList<>(monuments);    
+        if (!isValid(sortKey, new String[]{"nom", "any", "latitud", "longitud"})) {
+            throw new IllegalArgumentException("Columna invalida");
+        }
+        Collections.sort(rst, (m1, m2) -> {
+            Object value1 = getMonumentValue(m1, sortKey);
+            Object value2 = getMonumentValue(m2, sortKey);
+
+            if (sortKey.equals("nom")) {
+                return ((String) value1).compareTo((String) value2);
+            } else if (sortKey.equals("any")) {
+                return ((Integer) value1).compareTo((Integer) value2);
+            } else {
+                return ((Double) value1).compareTo((Double) value2);
+            }
+
+        });
+
+        
         return rst;
     }
 
@@ -248,11 +268,19 @@ public class Exercici0203 {
      * 
      * @throws IllegalArgumentException si el paràmetre de columna és invàlid (no força un 'try/catch')
      * 
-     * @test ./runTest.sh com.exercicis.TestExercici0203#testOrdenaMonuments
+     * @test ./runTest.sh com.exercicis.TestExercici0203#testFiltraMonuments
      */
     public static ArrayList<HashMap<String, Object>> filtraMonuments(ArrayList<HashMap<String, Object>> monuments, String filterKey, String filterValue) throws IllegalArgumentException {
-        ArrayList<HashMap<String, Object>> filteredMonuments = new ArrayList<>( );    
-        return filteredMonuments;
+        ArrayList<HashMap<String, Object>> rst = new ArrayList<>();
+        if (!isValid(filterKey, new String[]{"nom", "pais", "categoria"})) {
+            throw new IllegalArgumentException("Columna invalida");
+        }
+        for (HashMap<String, Object> monument : monuments) {
+            if (getMonumentValue(monument, filterKey).toString().equals(filterValue)) {
+                rst.add(monument);
+            }
+        }
+        return rst;
     }
 
     /**
@@ -281,10 +309,10 @@ public class Exercici0203 {
      *
      * Exemples:
      * formatRow(new String[]{"Nom", "País", "Any"}, new int[]{10, 6, 4});
-     * Retorna: "│ Nom       │ País  │ Any │"
+     * Retorna: "│Nom       │País  │Any │"
      *
      * formatRow(new String[]{"Machu Picchu", "Perú", "1983"}, new int[]{10, 6, 4});
-     * Retorna: "│ Machu Picc│ Perú  │ 1983│"
+     * Retorna: "│Machu Picc│Perú  │1983│"
      *
      * @param values Array amb els valors de cada columna.
      * @param columnWidths Array amb l'amplada de cada columna.
@@ -292,7 +320,7 @@ public class Exercici0203 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0203#testFormatRow
      */
-    private static String formatRow(String[] values, int[] columnWidths) {
+    public static String formatRow(String[] values, int[] columnWidths) {
         return "";
     }
     
@@ -310,7 +338,7 @@ public class Exercici0203 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0203#testGetCoordsString
      */
-    static String getCoordsString(HashMap<String, Object> monument) {
+    public static String getCoordsString(HashMap<String, Object> monument) {
         return "";
     }
 

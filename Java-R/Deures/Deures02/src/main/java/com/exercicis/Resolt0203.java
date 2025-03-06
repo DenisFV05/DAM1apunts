@@ -216,7 +216,7 @@ public class Resolt0203 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0203#testIsValidValue
      */
-    private static boolean isValid(String value, String[] validValues) {
+    public static boolean isValid(String value, String[] validValues) {
         for (String valid : validValues) {
             if (valid.equals(value)) {
                 return true;
@@ -275,23 +275,19 @@ public class Resolt0203 {
      * 
      * @throws IllegalArgumentException si el paràmetre de columna és invàlid (no força un 'try/catch')
      * 
-     * @test ./runTest.sh com.exercicis.TestExercici0203#testOrdenaMonuments
+     * @test ./runTest.sh com.exercicis.TestExercici0203#testFiltraMonuments
      */
     public static ArrayList<HashMap<String, Object>> filtraMonuments(ArrayList<HashMap<String, Object>> monuments, String filterKey, String filterValue) throws IllegalArgumentException {
+        ArrayList<HashMap<String, Object>> rst = new ArrayList<>();
         if (!isValid(filterKey, new String[]{"nom", "pais", "categoria"})) {
-            throw new IllegalArgumentException("Invalid filter key: " + filterKey);
+            throw new IllegalArgumentException("Columna invalida");
         }
-    
-        ArrayList<HashMap<String, Object>> filteredMonuments = new ArrayList<>(
-            monuments.stream()
-                .filter(monument -> {
-                    Object value = getMonumentValue(monument, filterKey);
-                    return value instanceof String && ((String) value).equalsIgnoreCase(filterValue);
-                })
-                .collect(Collectors.toList())
-        );
-    
-        return filteredMonuments;
+        for (HashMap<String, Object> monument : monuments) {
+            if (getMonumentValue(monument, filterKey).toString().equals(filterValue)) {
+                rst.add(monument);
+            }
+        }
+        return rst;
     }
 
     /**
@@ -332,10 +328,10 @@ public class Resolt0203 {
      *
      * Exemples:
      * formatRow(new String[]{"Nom", "País", "Any"}, new int[]{10, 6, 4});
-     * Retorna: "│ Nom       │ País  │ Any │"
+     * Retorna: "│Nom       │País  │Any │"
      *
      * formatRow(new String[]{"Machu Picchu", "Perú", "1983"}, new int[]{10, 6, 4});
-     * Retorna: "│ Machu Picc│ Perú  │ 1983│"
+     * Retorna: "│Machu Picc│Perú  │1983│"
      *
      * @param values Array amb els valors de cada columna.
      * @param columnWidths Array amb l'amplada de cada columna.
@@ -343,7 +339,7 @@ public class Resolt0203 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0203#testFormatRow
      */
-    private static String formatRow(String[] values, int[] columnWidths) {
+    public static String formatRow(String[] values, int[] columnWidths) {
         StringBuilder row = new StringBuilder("│");
         for (int i = 0; i < values.length; i++) {
             String value = values[i] == null ? "" : values[i];
@@ -369,7 +365,7 @@ public class Resolt0203 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0203#testGetCoordsString
      */
-    static String getCoordsString(HashMap<String, Object> monument) {
+    public static String getCoordsString(HashMap<String, Object> monument) {
         Object latObj = getMonumentValue(monument, "latitud");
         Object lonObj = getMonumentValue(monument, "longitud");
         Double lat = ((Number) latObj).doubleValue();
