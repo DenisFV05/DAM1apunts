@@ -19,16 +19,18 @@ public class ConfiguracioGlobal {
     }
 
     public String getIdioma() {
-        return "";
+        return idioma;
     }
 
     public void setIdioma(String idioma) {
+        this.idioma = idioma;
     }
 
     public String getZonaHoraria() {
-        return "";
+        return zonaHoraria;
     }
 
     public void setZonaHoraria(String zonaHoraria) {
+        this.zonaHoraria = zonaHoraria;
     }
 }

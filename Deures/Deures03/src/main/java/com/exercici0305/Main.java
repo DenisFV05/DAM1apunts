@@ -2,9 +2,6 @@ package com.exercici0305;
 
 public class Main {
     public static void main(String[] args) {
-        /* TODO resol l'exercici per tal que funcioni
-           el codi d'aquest main
-
         Torneig torneig = new Torneig();
 
         Jugador jugador1 = new Jugador("Leo Messi", 35, "PSG");
@@ -23,6 +20,5 @@ public class Main {
 
         System.out.println("\nFase de competició:");
         torneig.competir();
-        */
     }
 }

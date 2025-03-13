@@ -21,7 +21,7 @@ public class Exercici0203 {
     public static Locale defaultLocale;
     
     // Fes anar el 'main' de l'exercici amb:
-    // ./run.sh com.exercicis.Exercici0203
+    // ./run.sh com.exercicis.Resolt0203
     public static void main(String[] args) {
         scanner = new Scanner(System.in);
         defaultLocale = Locale.getDefault();
@@ -35,19 +35,16 @@ public class Exercici0203 {
         
         try {
             ArrayList<HashMap<String, Object>> monuments = loadMonuments("./data/monuments.json");
-            ArrayList<HashMap<String, Object>> monumentsOrdenats = ordenaMonuments(monuments, "nom");
-            ArrayList<HashMap<String, Object>> monumentsFiltrats = filtraMonuments(monuments, "categoria", "Monumental");
-            //System.out.println(getMonumentValue(monuments.get(2), "nom"));
-            //System.out.println(getMonumentValue(monuments.get(2), "pais"));
-            //System.out.println(getMonumentValue(monuments.get(2), "categoria"));
-            //System.out.println(getMonumentValue(monuments.get(2), "any"));
-            //System.out.println(getMonumentValue(monuments.get(2), "longitud"));
+            //ArrayList<HashMap<String, Object>> monumentsOrdenats = ordenaMonuments(monuments, "nom");
+            //ArrayList<HashMap<String, Object>> monumentsFiltrats = filtraMonuments(monuments, "categoria", "cultural");
+            System.out.println(getMonumentValue(monuments.get(2), "nom"));
+            System.out.println(getMonumentValue(monuments.get(2), "pais"));
+            System.out.println(getMonumentValue(monuments.get(2), "categoria"));
+            System.out.println(getMonumentValue(monuments.get(2), "any"));
+            System.out.println(getMonumentValue(monuments.get(2), "longitud"));
 
-            //System.out.println(getCoordsString((monuments.get(2))));
-
-            taulaMonuments(monumentsOrdenats);
-            taulaMonuments(monumentsFiltrats);
-
+            System.out.println(getCoordsString((monuments.get(2))));
+            taulaMonuments(monuments);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -221,8 +218,12 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testIsValidValue
      */
     public static boolean isValid(String value, String[] validValues) {
-        if (validValues.length == 0) return false;
-        return Arrays.asList(validValues).indexOf(value) != -1;
+        for (String valid : validValues) {
+            if (valid.equals(value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -238,25 +239,29 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testOrdenaMonuments
      */
     public static ArrayList<HashMap<String, Object>> ordenaMonuments(ArrayList<HashMap<String, Object>> monuments, String sortKey) throws IllegalArgumentException {
-        ArrayList<HashMap<String, Object>> rst = new ArrayList<>(monuments);    
-        if (!isValid(sortKey, new String[]{"nom", "any", "latitud", "longitud"})) {
-            throw new IllegalArgumentException("Columna invalida");
+        // Validació dels camps
+        String[] validKeys = {"nom", "any", "latitud", "longitud"};
+        if (!isValid(sortKey, validKeys)) {
+            throw new IllegalArgumentException("Invalid sort key: " + sortKey);
         }
-        Collections.sort(rst, (m1, m2) -> {
-            Object value1 = getMonumentValue(m1, sortKey);
-            Object value2 = getMonumentValue(m2, sortKey);
-
-            if (sortKey.equals("nom")) {
-                return ((String) value1).compareTo((String) value2);
-            } else if (sortKey.equals("any")) {
-                return ((Integer) value1).compareTo((Integer) value2);
-            } else {
-                return ((Double) value1).compareTo((Double) value2);
+    
+        ArrayList<HashMap<String, Object>> rst = new ArrayList<>(monuments);
+        rst.sort((m1, m2) -> {
+            Object val1 = getMonumentValue(m1, sortKey);
+            Object val2 = getMonumentValue(m2, sortKey);
+    
+            if (val1 == null) return 1;
+            if (val2 == null) return -1;
+    
+            if (val1 instanceof String && val2 instanceof String) {
+                return ((String) val1).compareToIgnoreCase((String) val2);
+            } else if (val1 instanceof Number && val2 instanceof Number) {
+                return Double.compare(((Number) val1).doubleValue(), ((Number) val2).doubleValue());
             }
-
+    
+            return 0;
         });
-
-        
+    
         return rst;
     }
 
@@ -300,18 +305,19 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testGeneraMarcTaula
      */
     public static String generaMarcTaula(int[] columnWidths, char[] separators) {
-        StringBuilder rst = new StringBuilder();
-
-        rst.append(separators[0]);
+        StringBuilder result = new StringBuilder();
+        result.append(separators[0]); 
+    
         for (int i = 0; i < columnWidths.length; i++) {
-            rst.append(("─").repeat(columnWidths[i]));
+            result.append("─".repeat(columnWidths[i])); 
             if (i < columnWidths.length - 1) {
-                rst.append(separators[1]);
+                result.append(separators[1]); 
             }
         }
-        rst.append(separators[2]);
-
-        return rst.toString();
+    
+        result.append(separators[2]); 
+    
+        return result.toString();
     }
 
     /**
@@ -335,22 +341,15 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testFormatRow
      */
     public static String formatRow(String[] values, int[] columnWidths) {
-        String rst = "";
-        for (int i = 0; i < values.length; i = i + 1) { 
-            rst += "│";
-            String value = values[i];
+        StringBuilder row = new StringBuilder("│");
+        for (int i = 0; i < values.length; i++) {
+            String value = values[i] == null ? "" : values[i];
             if (value.length() > columnWidths[i]) {
                 value = value.substring(0, columnWidths[i]);
             }
-            rst += value;
-            int spaceCount = columnWidths[i] - value.length();
-            if (spaceCount > 0) {
-                rst += " ".repeat(spaceCount);
-            }
-            
+            row.append(String.format("%-" + columnWidths[i] + "s", value)).append("│");
         }
-        rst += "│";
-        return rst;
+        return row.toString();
     }
     
 
@@ -368,14 +367,12 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testGetCoordsString
      */
     public static String getCoordsString(HashMap<String, Object> monument) {
-        Double latitud = (Double) getMonumentValue(monument, "latitud");
-        Double longitud = (Double) getMonumentValue(monument, "longitud");
-
-        if (latitud == null || longitud == null){
-            return " ";
-        }
-        
-        return String.format("%.1f,%.1f", latitud, longitud);
+        Object latObj = getMonumentValue(monument, "latitud");
+        Object lonObj = getMonumentValue(monument, "longitud");
+        Double lat = ((Number) latObj).doubleValue();
+        Double lon = ((Number) lonObj).doubleValue();
+        if (latObj == null || lonObj == null) return "";
+        return String.format("%.1f,%.1f", lat, lon);
     }
 
     /**
@@ -399,36 +396,26 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testTaulaMonuments
      */
     public static void taulaMonuments(ArrayList<HashMap<String, Object>> monuments) {
-        StringBuilder rst = new StringBuilder();
-        
-        int [] columnWidths = {15, 10, 5, 10};
+        // Definició de les columnes
+        String[] columnTitles = {"Nom", "Pais", "Any", "Coords"};
+        int[] columnWidths = {14, 5, 4, 12};
+ 
+        // Crear i mostrar la taula
+        System.out.println(generaMarcTaula(columnWidths, new char[]{'┌', '┬', '┐'}));
+        System.out.println(formatRow(columnTitles, columnWidths));
+        System.out.println(generaMarcTaula(columnWidths, new char[]{'├', '┼', '┤'}));
 
-        char[] separators = {'┌', '┬', '┐'};
-        rst.append(generaMarcTaula(columnWidths, separators)).append("\n");
-        
-        String[] headers = {"Nom", "Pais", "Any", "Coords"};
-        rst.append(formatRow(headers, columnWidths)).append("\n");
-        
-        char[] separators1 = {'├', '┼', '┤'};
-        rst.append(generaMarcTaula(columnWidths, separators1)).append("\n");
-
-        for (int i = 0; i < monuments.size(); i++) {
-            HashMap<String, Object> monument = monuments.get(i);
-            String nom = (String) getMonumentValue(monument, "nom");
-            String pais = (String) getMonumentValue(monument, "pais");
-            String any = String.valueOf(getMonumentValue(monument, "any"));
-            String coords = getCoordsString(monument);
-
-            String[] rowValues = {nom, pais, any, coords};
-            rst.append(formatRow(rowValues, columnWidths)).append("\n");
+        for (HashMap<String, Object> monument : monuments) {
+            String[] row = {
+                getMonumentValue(monument, "nom").toString(),
+                getMonumentValue(monument, "pais").toString(),
+                getMonumentValue(monument, "any").toString(),
+                getCoordsString(monument)
+            };
+            System.out.println(formatRow(row, columnWidths));
         }
 
-        separators[0] = '└';
-        separators[1] = '┴';
-        separators[2] = '┘';
-        rst.append(generaMarcTaula(columnWidths, separators)).append("\n");
-
-        System.out.println(rst);
+        System.out.println(generaMarcTaula(columnWidths, new char[]{'└', '┴', '┘'}));
     }
 
     /**
@@ -449,7 +436,22 @@ public class Exercici0203 {
      * @test ./runTest.sh com.exercicis.TestExercici0203#testGeneraBaralla
      */
     public static ArrayList<HashMap<String, Object>> generaBaralla() {
+        String[] pals = {"oros", "copes", "espases", "bastos"};
+        int[] numeros = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}; 
+
         ArrayList<HashMap<String, Object>> baralla = new ArrayList<>();
+
+        for (String pal : pals) {
+            for (int numero : numeros) {
+                HashMap<String, Object> carta = new HashMap<>();
+                carta.put("pal", pal);
+                carta.put("número", numero);
+                baralla.add(carta);
+            }
+        }
+
+        Collections.shuffle(baralla); // Barreja les cartes aleatòriament
+
         return baralla;
     }
 
@@ -460,6 +462,19 @@ public class Exercici0203 {
      * @throws IOException si hi ha algun error amb l'escriptura de l'arxiu forçant un 'try/catch'
      */
     public static void guardaBaralla(String filePath) throws IOException {
+        ArrayList<HashMap<String, Object>> baralla = generaBaralla();
+        JSONArray jsonArray = new JSONArray();
 
+        for (HashMap<String, Object> carta : baralla) {
+            JSONObject cartaJSON = new JSONObject(carta);
+            jsonArray.put(cartaJSON);
+        }
+
+        // Escriure al fitxer JSON
+        try (FileWriter file = new FileWriter(filePath)) {
+            file.write(jsonArray.toString(4)); // Format JSON amb indentació de 4 espais
+        } catch (IOException e) {
+            throw new IOException("Error guardant la baralla al fitxer: " + filePath, e);
+        }
     }
 }

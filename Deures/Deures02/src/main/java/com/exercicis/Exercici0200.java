@@ -9,14 +9,8 @@ import java.util.Scanner;
 
 public class Exercici0200 {
 
-    public static Scanner scanner;
-    public static Locale defaultLocale;
-
-    // ./run.sh com.exercicis.Exercici0200
     public static void main(String[] args) {
-        scanner = new Scanner(System.in);
-        defaultLocale = Locale.getDefault();
-        Locale.setDefault(Locale.US);
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println(addImaginaries("1+2i", "4+5i"));
 
@@ -60,7 +54,6 @@ public class Exercici0200 {
         System.out.println(findUniqueNumber(new ArrayList<>(Arrays.asList(2.0, 2.0, 1.0))));
         System.out.println(findUniqueNumber(new ArrayList<>(Arrays.asList(4.0, 1.0, 2.0, 1.0, 2.0))));
 
-        Locale.setDefault(defaultLocale);
         scanner.close();
     }
 
@@ -71,10 +64,9 @@ public class Exercici0200 {
      * @return la part real del número imaginari
      */
     private static int getImaginaryReal(String num) {
-        // Cerca l'últim "+" (en cas de números negatius)
-        // Si no hi ha "+", busca "-"
-        // La part real és tot abans d'aquest índex
-        return 0; 
+        int idx = num.lastIndexOf("+");             // Cerca l'últim "+" (en cas de números negatius)
+        if (idx == -1) idx = num.lastIndexOf("-");  // Si no hi ha "+", busca "-"
+        return Integer.parseInt(num.substring(0, idx)); // La part real és tot abans d'aquest índex
     }
 
     /**
@@ -84,9 +76,9 @@ public class Exercici0200 {
      * @return la part imaginària del número imaginari
      */
     private static int getImaginary(String num) {
-        // Cerca el signe de la part imaginària
-        // Extreu la part imaginària
-        return 0; 
+        int idx = num.lastIndexOf("+");
+        if (idx == -1) idx = num.lastIndexOf("-");  // Cerca el signe de la part imaginària
+        return Integer.parseInt(num.substring(idx, num.length() - 1)); // Extreu la part imaginària
     }
 
     /**
@@ -107,7 +99,14 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testAddImaginariesLargeNumbers
      */
     public static String addImaginaries(String num0, String num1) {
-        return "";
+        int real0 = getImaginaryReal(num0);
+        int img0 = getImaginary(num0);
+        int real1 = getImaginaryReal(num1);
+        int img1 = getImaginary(num1);
+        int real = real0 + real1;
+        int img = img0 + img1;
+
+        return real + (img >= 0 ? "+" : "") + img + "i";
     }
 
     /**
@@ -123,6 +122,19 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testDrawPascalFive
      */
     public static void drawPascal(int n) {
+
+        for (int i = 0; i < n; i++) {
+            int num = 1;
+            for (int j = 0; j <= i; j++) {
+                String next = " ";
+                if (j == i) {
+                    next = "";
+                }
+                System.out.print(num + next);
+                num = num * (i - j) / (j + 1);
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -139,8 +151,11 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testAddListDecimals
      */
     public static double addList(ArrayList<Double> list) {
-        double rst = 0.0;
-        return rst;
+        double sum = 0;
+        for (double num : list) {
+            sum += num;
+        }
+        return sum;
     }
 
     /** 
@@ -157,6 +172,15 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testPrintMatrixEmpty
      */
     public static void printMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            for (int i = 0; i < row.length; i++) {
+                System.out.print(row[i]);
+                if (i < row.length - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
+        }
     }
 
     /**
@@ -188,8 +212,18 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testTransposeSingleElement
      */
     public static int[][] transpose(int[][] matrix) {
-        int[][] rst = new int[0][0];
-        return rst;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int transposedRows = cols;
+        int transposedCols = rows;
+        int[][] transposed = new int[transposedRows][transposedCols];
+
+        for (int cntRow = 0; cntRow < rows; cntRow = cntRow + 1) {
+            for (int cntCol = 0; cntCol < cols; cntCol = cntCol + 1) {
+                transposed[cntCol][cntRow] = matrix[cntRow][cntCol];
+            }
+        }
+        return transposed;
     }
 
     /**
@@ -213,6 +247,12 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testFirstNonRepeatedLongString
      */
     public static char firstNonRepeated(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (str.indexOf(c) == str.lastIndexOf(c)) {
+                return c;
+            }
+        }
         return '_';
     }
 
@@ -228,7 +268,9 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testInverIntSingleDigit
      */
     public static int inverInt(int num) {
-        return 0;
+        String str = Integer.toString(num);
+        String reversed = new StringBuilder(str).reverse().toString();
+        return Integer.parseInt(reversed);
     }
 
     /**
@@ -253,8 +295,10 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testMinMaxAddWithDuplicates
      */
     public static ArrayList<Integer> minMaxAdd(ArrayList<Integer> nums) {
-        ArrayList<Integer> rst = new ArrayList<>();
-        return rst;
+        nums.sort((a, b) -> a.compareTo(b));
+        int minSum = nums.get(0) + nums.get(1) + nums.get(2) + nums.get(3);
+        int maxSum = nums.get(1) + nums.get(2) + nums.get(3) + nums.get(4);
+        return new ArrayList<>(Arrays.asList(minSum, maxSum));
     }
 
     /**
@@ -279,8 +323,17 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testSumaSenseSumarZero
      * @test ./runTest.sh com.exercicis.TestExercici0200#testSumaSenseSumarLargeNumbers
      */
-    public static int sumaSenseSumar(int a, int b) {       
-        return 0;
+    public static int sumaSenseSumar(int a, int b) {
+        String s1 = "x".repeat(Math.abs(a));
+        String s2 = "x".repeat(Math.abs(b));
+        
+        int resultat = s1.length() + s2.length();
+        
+        if ((a < 0 && b >= 0) || (a >= 0 && b < 0)) {
+            resultat = Math.max(s1.length(), s2.length()) - Math.min(s1.length(), s2.length());
+        }
+        
+        return (a < 0 || b < 0) ? -resultat : resultat;
     }
 
     /**
@@ -304,8 +357,24 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testMinDistancesNoTargetFound
      */
     public static ArrayList<Integer> minDistances(String text, char target) {
-        ArrayList<Integer> rst = new ArrayList<>();
-        return rst;
+        int textLength = text.length();
+        ArrayList<Integer> distances = new ArrayList<>(Collections.nCopies(textLength, textLength));
+
+        // Distàncies mínimes de l'esquerra a la dreta
+        int lastTargetIndex = -textLength;
+        for (int cntChar = 0; cntChar < textLength; cntChar++) {
+            if (text.charAt(cntChar) == target) lastTargetIndex = cntChar;
+            distances.set(cntChar, Math.min(distances.get(cntChar), cntChar - lastTargetIndex));
+        }
+
+        // Distàncies mínimes de la dreta a l'esquerra
+        lastTargetIndex = 2 * textLength;
+        for (int cntChar = textLength - 1; cntChar >= 0; cntChar--) {
+            if (text.charAt(cntChar) == target) lastTargetIndex = cntChar;
+            distances.set(cntChar, Math.min(distances.get(cntChar), lastTargetIndex - cntChar));
+        }
+
+        return distances;
     }
 
     /**
@@ -329,6 +398,23 @@ public class Exercici0200 {
      * @test ./runTest.sh com.exercicis.TestExercici0200#testFindUniqueNumberNoUnique
      */
     public static Double findUniqueNumber(ArrayList<Double> nums) {
-        return 0.0;
+        HashMap<Double, Integer> frequencyMap = new HashMap<>();
+
+        // Guardar la freqüència de cada número en un HashMap
+        for (Double num : nums) {
+            if (frequencyMap.containsKey(num)) {
+                frequencyMap.put(num, frequencyMap.get(num) + 1);
+            } else {
+                frequencyMap.put(num, 1);
+            }
+        }
+
+        for (HashMap.Entry<Double, Integer> entry : frequencyMap.entrySet()) {
+            if (entry.getValue() == 1) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
     }
 }

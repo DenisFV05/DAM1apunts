@@ -26,10 +26,9 @@ public class Exercici0202 {
         Locale.setDefault(Locale.US);
 
         //showJSONAstronautes("./data/astronautes.json");
-        JSONAstronautesToArrayList("./data/astronautes.json");
 
-        showEsportistesOrdenatsPerMedalla("./data/esportistes.json", "or");
-        showEsportistesOrdenatsPerMedalla("./data/esportistes.json", "plata");
+        // showEsportistesOrdenatsPerMedalla("./data/esportistes.json", "or");
+        // showEsportistesOrdenatsPerMedalla("./data/esportistes.json", "plata");
 
         //mostrarPlanetesOrdenats("./data/planetes.json", "nom");
         //mostrarPlanetesOrdenats("./data/planetes.json", "radi");
@@ -74,18 +73,30 @@ public class Exercici0202 {
     /**
      * Llegeix l'arxiu de 'filePath' i mostra per consola les dades dels astronautes.
      * 
-     * El format és:
-     * > Astronauta 0:
-     *   Nom: Yuri Gagarin
-     *   Naixement: 1934
-     * > Astronauta 1:
-     *   Nom: Neil Armstrong
-     *   Naixement: 1930
-     * 
      * @test ./runTest.sh com.exercicis.TestExercici0202#testShowJSONAstronautes
      */
     public static void showJSONAstronautes(String filePath) {
-    } 
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+
+            JSONObject jsonObject = new JSONObject(content);
+            JSONArray jsonArray = jsonObject.getJSONArray("astronautes");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject atronauta = jsonArray.getJSONObject(i);
+
+                String nom = atronauta.getString("nom");
+                int anyNeix = atronauta.getInt("any_naixement");
+
+                System.out.println("> Astronauta " + i + ":");
+                System.out.println("  Nom: " + nom);
+                System.out.println("  Naixement: " + anyNeix);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Llegeix l'arxiu de 'filePath', retorna un ArrayList amb les dades dels astronautes
@@ -95,41 +106,71 @@ public class Exercici0202 {
      */
     public static ArrayList<HashMap<String, Object>> JSONAstronautesToArrayList(String filePath) {
         ArrayList<HashMap<String, Object>> rst = new ArrayList<>();
+
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+
+            JSONObject jsonObject = new JSONObject(content);
+            JSONArray jsonArray = jsonObject.getJSONArray("astronautes");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject atronauta = jsonArray.getJSONObject(i);
+
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("nom", atronauta.getString("nom"));
+                map.put("any_naixement", atronauta.getInt("any_naixement"));
+
+                rst.add(map);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return rst;
     }
 
     /**
-     * Llegeix l'arxiu de 'filePath', retorna un ArrayList amb les dades dels esportistes
-     * Les dades han d'estar en un HashMap amb: nom, any_naixement, pais i medalles
-     * Les medalles de la clau 'medalles' han d'estar en un HashMap amb les claus "or", "plata" i "bronze"
-     * 
-     * @test ./runTest.sh com.exercicis.TestExercici0202#testJSONEsportistesToArrayList
-     */
+    * Llegeix l'arxiu de 'filePath', retorna un ArrayList amb les dades dels esportistes
+    * Les dades han d'estar en un HashMap amb: nom, any_naixement, pais i medalles
+    * Les medalles de la clau 'medalles' han d'estar en un HashMap amb les claus "or", "plata" i "bronze"
+    * 
+    * @test ./runTest.sh com.exercicis.TestExercici0202#JSONEsportistesToArrayList
+    */
     public static ArrayList<HashMap<String, Object>> JSONEsportistesToArrayList(String filePath) {
         ArrayList<HashMap<String, Object>> rst = new ArrayList<>();
+
         try {
             String content = new String(Files.readAllBytes(Paths.get(filePath)));
+
+            // Directament la llista d'esportistes
             JSONArray jsonArray = new JSONArray(content);
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                JSONObject esportista = jsonArray.getJSONObject(i);
+
                 HashMap<String, Object> map = new HashMap<>();
-                map.put("nom", jsonObject.getString("nom"));
-                map.put("any_naixement", jsonObject.getInt("any_naixement"));
-                map.put("pais", jsonObject.getString("pais"));
+                map.put("nom", esportista.getString("nom"));
+                map.put("any_naixement", esportista.getInt("any_naixement"));
+                map.put("pais", esportista.getString("pais"));
 
-                JSONObject medalles = jsonObject.getJSONObject("medalles_olimpiques");
-                HashMap<String, Object> mapMedalles = new HashMap<>();
-                mapMedalles.put("or", medalles.getInt("or"));
-                mapMedalles.put("plata", medalles.getInt("plata"));
-                mapMedalles.put("bronze", medalles.getInt("bronze"));
+                // Convertir l'objecte de medalles a un HashMap
+                JSONObject medallesJson = esportista.getJSONObject("medalles_olimpiques");
+                
+                HashMap<String, Integer> medalles = new HashMap<>();
+                medalles.put("or", medallesJson.getInt("or"));
+                medalles.put("plata", medallesJson.getInt("plata"));
+                medalles.put("bronze", medallesJson.getInt("bronze"));
 
-                map.put("medalles", mapMedalles);
+                map.put("medalles", medalles);
+
                 rst.add(map);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return rst;
     }
 
@@ -145,7 +186,7 @@ public class Exercici0202 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0202#testOrdenarEsportistesPerMedalla
      */
-    public static ArrayList<HashMap<String, Object>> ordenarEsportistesPerMedalla(String filePath, String tipusMedalla) {
+    public static ArrayList<HashMap<String, Object>> ordenarEsportistesPerMedalla(String filePath, String tipusMedalla) throws IllegalArgumentException {
         // Obtenir la llista d'esportistes des del fitxer JSON
         ArrayList<HashMap<String, Object>> esportistes = JSONEsportistesToArrayList(filePath);
 
@@ -194,6 +235,31 @@ public class Exercici0202 {
      * @test ./runTest.sh com.exercicis.TestExercici0202#testShowEsportistesOrdenatsPerBronze
      */
     public static void showEsportistesOrdenatsPerMedalla(String filePath, String tipusMedalla) {
+        // Obtenir la llista ordenada d'esportistes
+        ArrayList<HashMap<String, Object>> esportistes = ordenarEsportistesPerMedalla(filePath, tipusMedalla);
+
+        // Imprimir la capçalera de la taula
+        String tipusFixed = tipusMedalla.substring(0, 1).toUpperCase() + tipusMedalla.substring(1).toLowerCase();
+
+        System.out.println("┌──────────────────────┬─────────────────┬────────────┬────────┐");
+        System.out.printf("│ %-20s │ %-15s │ %-10s │ %-6s │\n", "Nom", "País", "Naixement", tipusFixed);
+        System.out.println("├──────────────────────┼─────────────────┼────────────┼────────┤");
+
+        // Imprimir cada esportista a la taula
+        for (HashMap<String, Object> esportista : esportistes) {
+            String nom = (String) esportista.get("nom");
+            String pais = (String) esportista.get("pais");
+            int anyNaixement = (int) esportista.get("any_naixement");
+
+            @SuppressWarnings("unchecked")
+            HashMap<String, Integer> medalles = (HashMap<String, Integer>) esportista.get("medalles");
+            int numMedalles = medalles.get(tipusMedalla);
+
+            System.out.printf("│ %-20s │ %-15s │ %-10d │ %-6d │\n", nom, pais, anyNaixement, numMedalles);
+        }
+
+        // Tancament de la taula
+        System.out.println("└──────────────────────┴─────────────────┴────────────┴────────┘");
     }
 
     /**
@@ -215,6 +281,38 @@ public class Exercici0202 {
      */
     public static ArrayList<HashMap<String, Object>> JSONPlanetesToArrayList(String filePath) {
         ArrayList<HashMap<String, Object>> planetesList = new ArrayList<>();
+
+        try {
+            String content = new String(Files.readAllBytes(Paths.get(filePath)));
+            JSONObject jsonObject = new JSONObject(content);
+            JSONArray planetes = jsonObject.getJSONArray("planetes");
+
+            for (int i = 0; i < planetes.length(); i++) {
+                JSONObject planeta = planetes.getJSONObject(i);
+                HashMap<String, Object> planetaMap = new HashMap<>();
+
+                planetaMap.put("nom", planeta.getString("nom"));
+                
+                JSONObject dadesFisiques = planeta.getJSONObject("dades_fisiques");
+                HashMap<String, Number> dadesFisiquesMap = new HashMap<>();
+                dadesFisiquesMap.put("radi_km", dadesFisiques.getDouble("radi_km"));
+                dadesFisiquesMap.put("massa_kg", dadesFisiques.getDouble("massa_kg"));
+
+                planetaMap.put("dades_fisiques", dadesFisiquesMap);
+
+                JSONObject orbita = planeta.getJSONObject("orbita");
+                HashMap<String, Number> orbitaMap = new HashMap<>();
+                orbitaMap.put("distancia_mitjana_km", orbita.getDouble("distancia_mitjana_km"));
+                orbitaMap.put("periode_orbital_dies", orbita.getDouble("periode_orbital_dies"));
+
+                planetaMap.put("orbita", orbitaMap);
+
+                planetesList.add(planetaMap);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return planetesList;
     }
 
@@ -248,7 +346,49 @@ public class Exercici0202 {
      * @test ./runTest.sh com.exercicis.TestExercici0202#testMostrarPlanetesOrdenatsDistancia
      */
     public static void mostrarPlanetesOrdenats(String filePath, String columnaOrdenacio) throws IllegalArgumentException {
+        ArrayList<HashMap<String, Object>> planetes = JSONPlanetesToArrayList(filePath);
+
+        planetes.sort((p1, p2) -> {
+            switch (columnaOrdenacio) {
+                case "nom":
+                    return ((String) p1.get("nom")).compareTo((String) p2.get("nom"));
+                case "radi":
+                    return Double.compare(
+                        ((HashMap<String, Number>) p1.get("dades_fisiques")).get("radi_km").doubleValue(),
+                        ((HashMap<String, Number>) p2.get("dades_fisiques")).get("radi_km").doubleValue()
+                    );
+                case "massa":
+                    return Double.compare(
+                        ((HashMap<String, Number>) p1.get("dades_fisiques")).get("massa_kg").doubleValue(),
+                        ((HashMap<String, Number>) p2.get("dades_fisiques")).get("massa_kg").doubleValue()
+                    );
+                case "distància":
+                    return Double.compare(
+                        ((HashMap<String, Number>) p1.get("orbita")).get("distancia_mitjana_km").doubleValue(),
+                        ((HashMap<String, Number>) p2.get("orbita")).get("distancia_mitjana_km").doubleValue()
+                    );
+                default:
+                    throw new IllegalArgumentException("Columna d'ordenació invàlida: " + columnaOrdenacio +
+                            ". Valors vàlids: 'nom', 'radi', 'massa', 'distància'.");
+            }
+        });
+
+        System.out.println("┌──────────────┬────────────┬──────────────┬────────────────┐");
+        System.out.println("│ Nom          │ Radi (km)  │ Massa (kg)   │ Distància (km) │");
+        System.out.println("├──────────────┼────────────┼──────────────┼────────────────┤");
+
+        for (HashMap<String, Object> planeta : planetes) {
+            String nom = (String) planeta.get("nom");
+            double radi = ((HashMap<String, Number>) planeta.get("dades_fisiques")).get("radi_km").doubleValue();
+            double massa = ((HashMap<String, Number>) planeta.get("dades_fisiques")).get("massa_kg").doubleValue();
+            double distancia = ((HashMap<String, Number>) planeta.get("orbita")).get("distancia_mitjana_km").doubleValue();
+
+            System.out.printf("│ %-12s │ %-10.1f │ %-12.3e │ %-14.0f │%n", nom, radi, massa, distancia);
+        }
+
+        System.out.println("└──────────────┴────────────┴──────────────┴────────────────┘");
     }
+    
 
     /**
      * Crea un HashMap que representa una massa d'aigua amb característiques addicionals.
@@ -268,7 +408,7 @@ public class Exercici0202 {
         massaAigua.put("tipus", tipus);
         massaAigua.put("superficie_km2", superficie_km2);
         massaAigua.put("profunditat_max_m", profunditat_max_m);
-        massaAigua.put("caracteristiques", caracteristiques);
+        massaAigua.put("caracteristiques", caracteristiques); // Afegim la llista d'informació addicional
         return massaAigua;
     }
 
@@ -291,21 +431,20 @@ public class Exercici0202 {
      *          "tipus": "oceà", ...
      * 
      * @param filePath Ruta de l'arxiu JSON a crear.
-     * @throws IOException Si hi ha algun problema amb l'escriptura de l'arxiu forçant un try/catch
+     * @throws IOException Si hi ha algun problema amb l'escriptura de l'arxiu.
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0202#testValidarFormatJSON
      */
     public static void generarJSON(ArrayList<HashMap<String, Object>> dades, String filePath) throws IOException {
 
-        JSONArray jsonArray = new JSONArray(dades);
+        // Convertim el HashMap a JSONObject
+        JSONArray json = new JSONArray(dades);
 
+        // Escrivim el JSON a un fitxer
         try (FileWriter file = new FileWriter(filePath)) {
-            file.write(jsonArray.toString(4));
-        } catch (IOException e) {
-            e.printStackTrace();
+            file.write(json.toString(4)); // JSON amb indentació de 4 espais
         }
 
-        System.out.println("Arxiu de mar i oceans creat correctament.");
-
+        System.out.println("Arxiu JSON generat correctament a: " + filePath);
     }
 }

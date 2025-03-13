@@ -8,9 +8,9 @@ public class Exercici0008 {
     public static ArrayList<Integer> generaImparells(int numero) {
         ArrayList<Integer> imparells = new ArrayList<>();
         
-        /*
-            TODO: Resol aquí la funció
-        */
+        for (int i = 3; i <= numero; i += 2) {
+            imparells.add(i);
+        }
         
         return imparells;
     }
@@ -18,9 +18,15 @@ public class Exercici0008 {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        /*
-            TODO: Resol aquí l'exercici
-        */
+        System.out.print("Introdueix un número: ");
+        int numero = scanner.nextInt();
+
+        if (numero <= 2) {
+            System.out.println("No hi ha nombres imparells entre 2 i " + numero);
+        } else {
+            ArrayList<Integer> imparells = generaImparells(numero);
+            System.out.println("Nombres imparells entre 2 i " + numero + ": " + imparells);
+        }
 
         scanner.close();
     }

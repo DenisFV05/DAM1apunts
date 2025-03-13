@@ -4,41 +4,57 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Port {
+    private String nom;
+    private ArrayList<Vaixell> vaixells;
 
     public Port(String nom) {
-
+        this.nom = nom;
+        this.vaixells = new ArrayList<>();
     }
 
     public String getNom() {
-        return "";
+        return nom;
     }
 
-    public void setNom(String value) {
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public void afegirVaixell(Vaixell v) {
+        vaixells.add(v);
     }
 
     public ArrayList<Vaixell> getVaixells() {
-        ArrayList<Vaixell> rst = new ArrayList<>();
-        return rst;
+        return vaixells;
     }
 
     public void printVaixells() {
-
+        for (int i = 0; i < vaixells.size(); i++) {
+            System.out.println(vaixells.get(i));
+        }
     }
 
     public ArrayList<String> validarNormatives() {
-        ArrayList<String> rst = new ArrayList<>();
-        return rst;
+        ArrayList<String> resultats = new ArrayList<>();
+        for (Vaixell v : vaixells) {
+            if (v instanceof Reglamentari) {
+                resultats.add(v.nom + " (" + v.getClass().getSimpleName() + "): " +
+                        (((Reglamentari) v).compleixNormativa() ? "Normatiu" : "NO normatiu"));
+            }
+        }
+        return resultats;
     }
 
     public void printNormatives() {
-
+        ArrayList<String> normatives = validarNormatives();
+        for (int i = 0; i < normatives.size(); i++) {
+            System.out.println(normatives.get(i));
+        }
     }    
 
     @Override
     public String toString() {
-        return "";
+        return "Port[nom=" + nom + ", vaixells=" + vaixells.size() + "]";
     }
 }
+

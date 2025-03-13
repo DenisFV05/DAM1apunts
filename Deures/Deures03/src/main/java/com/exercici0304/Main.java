@@ -7,10 +7,6 @@ public class Main {
         Locale defaultLocale = Locale.getDefault();
         Locale.setDefault(Locale.US);
 
-        /*
-        TODO Modifica el codi de NumComplex.java 
-        per tal que funcioni aquest main
-
         try {
             NumComplex num1 = new NumComplex(3, 4);
             NumComplex num2 = new NumComplex(1, -2);
@@ -39,6 +35,5 @@ public class Main {
         } finally {
             Locale.setDefault(defaultLocale);
         }
-        */
     }
 }

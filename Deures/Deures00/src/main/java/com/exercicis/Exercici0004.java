@@ -5,31 +5,45 @@ import java.util.Scanner;
 public class Exercici0004 {
 
     public static int contaMajuscules(String contrasenya) {
-        /*
-            TODO: Resol aquí la funció
-        */
-        return 0;
+        int count = 0;
+        for (char c : contrasenya.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public static int contaMinuscules(String contrasenya) {
-        /*
-            TODO: Resol aquí la funció
-        */
-        return 0;
+        int count = 0;
+        for (char c : contrasenya.toCharArray()) {
+            if (Character.isLowerCase(c)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public static String validaContrasenya(String contrasenya) {
-        /*
-            TODO: Resol aquí la funció
-        */
-        return "";
+        if (contrasenya.length() >= 8 &&
+            contaMajuscules(contrasenya) >= 2 &&
+            contaMinuscules(contrasenya) >= 2) {
+            return "La contrasenya és vàlida";
+        } else {
+            return "La contrasenya NO és vàlida";
+        }
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        /*
-            TODO: Resol aquí l'exercici
-        */
+
+        System.out.print("Escriu una contrasenya: ");
+        String contrasenya = scanner.nextLine();
+
+        String resultat = validaContrasenya(contrasenya);
+
+        System.out.printf("La contrasenya '%s': %s\n", contrasenya, resultat);
+
         scanner.close();
     }
 }
