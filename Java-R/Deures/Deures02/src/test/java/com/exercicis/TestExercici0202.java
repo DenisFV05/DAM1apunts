@@ -12,9 +12,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 class TestExercici0202 {
 
     private Locale defaultLocale;
+    private static final String PATH_AIGUA = "./data/aigua.json";
 
     @BeforeEach
     public void setUp() {
@@ -327,6 +338,213 @@ class TestExercici0202 {
                 ">>>>>>>>>> Diff found >>>>>>>>>\n" + diff + "<<<<<<<<< Diff end <<<<<<<<<<<\n");
             System.out.println("Test passed, succeeded!");
 
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testJSONPlanetesToArrayList(TestInfo testInfo) {
+        try {
+            String filePath = "./data/planetes.json";
+            ArrayList<HashMap<String, Object>> result = Exercici0202.JSONPlanetesToArrayList(filePath);
+
+            assertNotNull(result, "La llista retornada no hauria de ser null.");
+            assertFalse(result.isEmpty(), "La llista retornada no hauria d'estar buida.");
+            assertEquals(4, result.size(), "El nombre de planetes no coincideix amb l'esperat.");
+
+            // Validació dels primers 3 planetes com a exemple
+            assertEquals("Mercuri", result.get(0).get("nom"));
+            assertEquals(2439.7, ((HashMap<String, Number>) result.get(0).get("dades_fisiques")).get("radi_km"));
+            assertEquals(3.3011e23, ((HashMap<String, Number>) result.get(0).get("dades_fisiques")).get("massa_kg"));
+
+            assertEquals("Venus", result.get(1).get("nom"));
+            assertEquals(6051.8, ((HashMap<String, Number>) result.get(1).get("dades_fisiques")).get("radi_km"));
+            assertEquals(4.8675e24, ((HashMap<String, Number>) result.get(1).get("dades_fisiques")).get("massa_kg"));
+
+            assertEquals("Terra", result.get(2).get("nom"));
+            assertEquals(6371.0, ((HashMap<String, Number>) result.get(2).get("dades_fisiques")).get("radi_km"));
+            assertEquals(5.97237e24, ((HashMap<String, Number>) result.get(2).get("dades_fisiques")).get("massa_kg"));
+
+            System.out.println("Test passed, succeeded!");
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
+    }
+
+    private void validarSortidaTaula(String columnaOrdenacio, String expected, TestInfo testInfo) {
+        try {
+            String filePath = "./data/planetes.json";
+
+            String output = SystemLambda.tapSystemOut(() ->
+                Exercici0202.mostrarPlanetesOrdenats(filePath, columnaOrdenacio)
+            ).trim().replace("\r\n", "\n");
+
+            // Comparació amb TestStringUtils.findFirstDifference()
+            String diff = TestStringUtils.findFirstDifference(output, expected.trim());
+            assertTrue(diff.compareTo("identical") == 0, 
+                ">>>>>>>>>> Diff found >>>>>>>>>\n" + diff + "<<<<<<<<< Diff end <<<<<<<<<<<\n");
+
+            System.out.println("Test passed for column: " + columnaOrdenacio);
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testMostrarPlanetesOrdenatsNom(TestInfo testInfo) {
+        validarSortidaTaula("nom", """
+        ┌──────────────┬────────────┬──────────────┬────────────────┐
+        │ Nom          │ Radi (km)  │ Massa (kg)   │ Distància (km) │
+        ├──────────────┼────────────┼──────────────┼────────────────┤
+        │ Mart         │ 3389.5     │ 6.417e+23    │ 227900000      │
+        │ Mercuri      │ 2439.7     │ 3.301e+23    │ 57910000       │
+        │ Terra        │ 6371.0     │ 5.972e+24    │ 149600000      │
+        │ Venus        │ 6051.8     │ 4.868e+24    │ 108200000      │
+        └──────────────┴────────────┴──────────────┴────────────────┘
+        """.trim().replace("\r\n", "\n"), testInfo);
+    }
+
+    @Test
+    void testMostrarPlanetesOrdenatsRadi(TestInfo testInfo) {
+        validarSortidaTaula("radi", """
+        ┌──────────────┬────────────┬──────────────┬────────────────┐
+        │ Nom          │ Radi (km)  │ Massa (kg)   │ Distància (km) │
+        ├──────────────┼────────────┼──────────────┼────────────────┤
+        │ Mercuri      │ 2439.7     │ 3.301e+23    │ 57910000       │
+        │ Mart         │ 3389.5     │ 6.417e+23    │ 227900000      │
+        │ Venus        │ 6051.8     │ 4.868e+24    │ 108200000      │
+        │ Terra        │ 6371.0     │ 5.972e+24    │ 149600000      │
+        └──────────────┴────────────┴──────────────┴────────────────┘
+        """.trim().replace("\r\n", "\n"), testInfo);
+    }
+
+    @Test
+    void testMostrarPlanetesOrdenatsMassa(TestInfo testInfo) {
+        validarSortidaTaula("massa", """
+        ┌──────────────┬────────────┬──────────────┬────────────────┐
+        │ Nom          │ Radi (km)  │ Massa (kg)   │ Distància (km) │
+        ├──────────────┼────────────┼──────────────┼────────────────┤
+        │ Mercuri      │ 2439.7     │ 3.301e+23    │ 57910000       │
+        │ Mart         │ 3389.5     │ 6.417e+23    │ 227900000      │
+        │ Venus        │ 6051.8     │ 4.868e+24    │ 108200000      │
+        │ Terra        │ 6371.0     │ 5.972e+24    │ 149600000      │
+        └──────────────┴────────────┴──────────────┴────────────────┘
+        """.trim().replace("\r\n", "\n"), testInfo);
+    }
+
+    @Test
+    void testMostrarPlanetesOrdenatsDistancia(TestInfo testInfo) {
+        validarSortidaTaula("distància", """
+        ┌──────────────┬────────────┬──────────────┬────────────────┐
+        │ Nom          │ Radi (km)  │ Massa (kg)   │ Distància (km) │
+        ├──────────────┼────────────┼──────────────┼────────────────┤
+        │ Mercuri      │ 2439.7     │ 3.301e+23    │ 57910000       │
+        │ Venus        │ 6051.8     │ 4.868e+24    │ 108200000      │
+        │ Terra        │ 6371.0     │ 5.972e+24    │ 149600000      │
+        │ Mart         │ 3389.5     │ 6.417e+23    │ 227900000      │
+        └──────────────┴────────────┴──────────────┴────────────────┘
+        """.trim().replace("\r\n", "\n"), testInfo);
+    }
+
+    @Test
+    void testCrearMassaAigua(TestInfo testInfo) {
+        try {
+            ArrayList<String> caracteristiques = new ArrayList<>();
+            caracteristiques.add("Exemple de característica");
+            caracteristiques.add("Segona característica");
+
+            HashMap<String, Object> massaAigua = Exercici0202.crearMassaAigua("Exemple", "mar", 123456, 7890, caracteristiques);
+
+            assertNotNull(massaAigua, "El HashMap retornat no hauria de ser null.");
+            assertEquals("Exemple", massaAigua.get("nom"), "El nom no coincideix.");
+            assertEquals("mar", massaAigua.get("tipus"), "El tipus no coincideix.");
+            assertEquals(123456.0, (double) massaAigua.get("superficie_km2"), 0.001, "La superfície no coincideix.");
+            assertEquals(7890.0, (double) massaAigua.get("profunditat_max_m"), 0.001, "La profunditat no coincideix.");
+            assertEquals(caracteristiques, massaAigua.get("caracteristiques"), "Les característiques no coincideixen.");
+
+            System.out.println("Test passed, succeeded!");
+        } catch (AssertionError e) {
+            System.out.println("Test failed: " + testInfo.getDisplayName());
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Test encountered an error: " + testInfo.getDisplayName());
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testValidarFormatJSON(TestInfo testInfo) {
+        try {
+            ArrayList<HashMap<String, Object>> dades = new ArrayList<>();
+
+            // Definim característiques addicionals per cada massa d'aigua
+            ArrayList<String> caracteristiquesPacific = new ArrayList<>();
+            caracteristiquesPacific.add("És l'oceà més gran del món");
+            caracteristiquesPacific.add("Conté la fossa de les Marianes, la més profunda del món");
+    
+            ArrayList<String> caracteristiquesAtlantic = new ArrayList<>();
+            caracteristiquesAtlantic.add("Separa Amèrica d'Europa i Àfrica");
+            caracteristiquesAtlantic.add("Conté el famós Triangle de les Bermudes");
+    
+            // Afegim mars i oceans amb característiques específiques
+            dades.add(Exercici0202.crearMassaAigua("Oceà Pacífic", "oceà", 168723000, 10924, caracteristiquesPacific));
+            dades.add(Exercici0202.crearMassaAigua("Oceà Atlàntic", "oceà", 85133000, 8486, caracteristiquesAtlantic));
+            dades.add(Exercici0202.crearMassaAigua("Oceà Índic", "oceà", 70560000, 7450, new ArrayList<>()));
+    
+            Exercici0202.generarJSON(dades, PATH_AIGUA);
+
+            String output = new String(Files.readAllBytes(Paths.get(PATH_AIGUA))).trim().replace("\r\n", "\n");
+            String expected = """
+[
+    {
+        "nom": "Oceà Pacífic",
+        "tipus": "oceà",
+        "profunditat_max_m": 10924,
+        "superficie_km2": 1.68723E8,
+        "caracteristiques": [
+            "És l'oceà més gran del món",
+            "Conté la fossa de les Marianes, la més profunda del món"
+        ]
+    },
+    {
+        "nom": "Oceà Atlàntic",
+        "tipus": "oceà",
+        "profunditat_max_m": 8486,
+        "superficie_km2": 8.5133E7,
+        "caracteristiques": [
+            "Separa Amèrica d'Europa i Àfrica",
+            "Conté el famós Triangle de les Bermudes"
+        ]
+    },
+    {
+        "nom": "Oceà Índic",
+        "tipus": "oceà",
+        "profunditat_max_m": 7450,
+        "superficie_km2": 7.056E7,
+        "caracteristiques": []
+    }
+]
+                """.trim().replace("\r\n", "\n"); // Exemple parcial
+
+            // Comparació amb TestStringUtils
+            String diff = TestStringUtils.findFirstDifference(output, expected);
+            assertTrue(diff.compareTo("identical") == 0, 
+                ">>>>>>>>>> Diff found >>>>>>>>>\n" + diff + "<<<<<<<<< Diff end <<<<<<<<<<<\n");
+
+            System.out.println("Test passed, succeeded!");
         } catch (AssertionError e) {
             System.out.println("Test failed: " + testInfo.getDisplayName());
             System.out.println(e.getMessage());

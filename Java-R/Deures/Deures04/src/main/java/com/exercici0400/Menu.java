@@ -2,28 +2,16 @@ package com.exercici0400;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
-
 
 public class Menu extends Component {
 
-    private String title;
     private HashMap<Integer, MenuItem> items;
     private boolean lastZero;
     
     public Menu(int x, int y, int width, int height, String title, HashMap<Integer, MenuItem> items, boolean lastZero) {
-        super(x, y, width, height);
-        this.title = title;
+        super(x, y, width, height, title);
         this.items = items;
         this.lastZero = lastZero;
-    }
-
-    public void setTitle(String value) {
-        this.title = value;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public void setLastZero(boolean value) {
@@ -35,6 +23,13 @@ public class Menu extends Component {
     }
 
     public int getSelection(String text) {
+        for (int i = 0; i < items.size(); i++) {
+            MenuItem item = items.get(i);
+
+            if (item.isInKeyWords(text) || text.equalsIgnoreCase(Integer.toString(i))) {
+                return i;
+            }
+        }
         return -1;
     }
 

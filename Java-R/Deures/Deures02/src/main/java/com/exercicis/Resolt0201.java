@@ -44,8 +44,18 @@ public class Resolt0201 {
         mostrarFrecuenciaParaules();
         invertirMapaClauValor();
         fusionarMapesSumantValors();
-        ordenarMapaPerClaus();
-        calcularEstadistiquesNotesEstudiants();
+
+        HashMap<String, Double> notes = new HashMap<>();
+        notes.put("Anna", 7.5);
+        notes.put("Joan", 6.8);
+        notes.put("Marta", 8.2);
+        notes.put("Pere", 4.1);
+        notes.put("Enric", 2.0);
+        notes.put("Amparo", 6.9);
+        notes.put("Olga", 9.0);
+        notes.put("Manel", 2.2);
+
+        calcularEstadistiquesNotesEstudiants(notes);
 
         Locale.setDefault(defaultLocale);
         scanner.close();
@@ -351,12 +361,20 @@ public class Resolt0201 {
     public static void mostrarFrecuenciaParaules() {
         System.out.println("Introdueix una frase:");
         String frase = scanner.nextLine();
-        String[] paraules = frase.split("\\s+");
+
+        frase = frase.replace(",", "").replace(".", "");
+        
+        String[] paraules = frase.split(" ");
         HashMap<String, Integer> freq = new HashMap<>();
-        for (String p : paraules) {
-            freq.put(p, freq.getOrDefault(p, 0) + 1);
+        for (String paraula : paraules) {
+            if (freq.containsKey(paraula)) {
+                freq.put(paraula, freq.get(paraula) + 1);
+            } else {
+                freq.put(paraula, 1);
+            }
         }
         System.out.println("Freqüència de paraules: " + freq);
+        
     }
 
     /**
@@ -415,38 +433,6 @@ public class Resolt0201 {
     }
 
     /**
-     * Ordena un HashMap per les clausi mostra el resultat.
-     * 
-     * Es crea un HashMap amb elements (Banana=3, Poma=5, Taronja=2) 
-     * per obtenir un ordre natural de les claus (alfabètic).
-     * 
-     * 
-     * Es mostra per pantalla:
-     * "Mapa ordenat per claus: {Banana=3, Poma=5, Taronja=2}".
-     * 
-     * @test ./runTest.sh com.exercicis.TestExercici0201#testOrdenarMapaPerClaus
-     */
-    public static void ordenarMapaPerClaus() {
-        HashMap<String, Integer> mapa = new HashMap<>();
-        mapa.put("Banana", 3);
-        mapa.put("Poma", 5);
-        mapa.put("Taronja", 2);
-
-        ArrayList<String> clausOrdenades = new ArrayList<>(mapa.keySet());
-        Collections.sort(clausOrdenades);
-
-        System.out.print("Mapa ordenat per claus: {");
-        for (int i = 0; i < clausOrdenades.size(); i++) {
-            String clau = clausOrdenades.get(i);
-            System.out.print(clau + "=" + mapa.get(clau));
-            if (i < clausOrdenades.size() - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println("}");
-    }
-
-    /**
      * Calcula i mostra les estadístiques (mitjana, màxim i mínim) de les notes dels estudiants.
      * 
      * Es defineix un HashMap on la clau és el nom de l'estudiant i el valor la seva nota.
@@ -458,18 +444,22 @@ public class Resolt0201 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0201#testCalcularEstadistiquesNotesEstudiants
      */
-    public static void calcularEstadistiquesNotesEstudiants() {
-        HashMap<String, Double> estudiants = new HashMap<>();
-        estudiants.put("Anna", 8.5);
-        estudiants.put("Joan", 6.0);
-        estudiants.put("Marc", 7.5);
-        double suma = 0, max = Double.MIN_VALUE, min = Double.MAX_VALUE;
+    public static void calcularEstadistiquesNotesEstudiants(HashMap<String, Double> estudiants) {
+        if (estudiants.isEmpty()) {
+            System.out.println("No hi ha dades.");
+            return;
+        }
+    
+        Double suma = 0.0;
+        Double max = Double.NEGATIVE_INFINITY;
+        Double min = Double.POSITIVE_INFINITY;
         for (double nota : estudiants.values()) {
             suma += nota;
             if (nota > max) max = nota;
             if (nota < min) min = nota;
         }
         double mitjana = suma / estudiants.size();
-        System.out.println("Mitjana: " + mitjana + ", Màxim: " + max + ", Mínim: " + min);
+        System.out.println("Mitjana: " + String.format("%.2f", mitjana) + ", Màxim: " + max + ", Mínim: " + min);
     }
+    
 }

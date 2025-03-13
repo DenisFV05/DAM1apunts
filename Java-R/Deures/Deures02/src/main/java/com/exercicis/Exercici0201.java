@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Exercici0201 {
 
@@ -16,11 +17,11 @@ public class Exercici0201 {
 
     // ./run.sh com.exercicis.Exercici0201
     public static void main(String[] args) {
-        
+
         scanner = new Scanner(System.in);
         defaultLocale = Locale.getDefault();
         Locale.setDefault(Locale.US);
-        
+        /* 
         int[] arrEnters = generaArrayEnters(10);
         mostraArrayEstadistiques(arrEnters);
 
@@ -36,17 +37,30 @@ public class Exercici0201 {
         ArrayList<Double> lstDecimals = generaLlistaDecimals(15);
         filtraLlistaDecimalsSuperiors50(lstDecimals);
 
+
         HashMap<String, Integer> persones = new HashMap<>();
         persones.put("Anna", 25);
         persones.put("Joan", 30);
         persones.put("Marc", 20);
         mostrarLlistaOrdenadesPerEdat(persones);
-
         mostrarFrecuenciaParaules();
         invertirMapaClauValor();
-        fusionarMapesSumantValors();
-        ordenarMapaPerClaus();
-        calcularEstadistiquesNotesEstudiants();
+ */
+        // fusionarMapesSumantValors();
+
+        // ordenarMapaPerClaus();
+
+        HashMap<String, Double> notes = new HashMap<>();
+        notes.put("Anna", 7.5);
+        notes.put("Joan", 6.8);
+        notes.put("Marta", 8.2);
+        notes.put("Pere", 4.1);
+        notes.put("Enric", 2.0);
+        notes.put("Amparo", 6.9);
+        notes.put("Olga", 9.0);
+        notes.put("Manel", 2.2);
+
+        calcularEstadistiquesNotesEstudiants(notes);
 
         Locale.setDefault(defaultLocale);
         scanner.close();
@@ -148,8 +162,8 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testGeneraArrayDecimals
      */
     public static double[] generaArrayDecimals(int mida) {
-        double[] rst = new double[mida];
-        return rst;
+        double[] array = new double[mida];
+        return array;
     }
 
     /**
@@ -180,7 +194,6 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testGeneraLlistaDecimals
      */
     public static void filtraArrayDecimalsSuperiors50(double[] decimals) {
-
     }   
 
     /**
@@ -197,7 +210,6 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testFiltraLlistaDecimalsSuperiors50
      */
     public static void filtraLlistaDecimalsSuperiors50(ArrayList<Double> decimals) {
-
     }
     
     /**
@@ -211,7 +223,6 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testMostrarLlistaOrdenadesPerEdat
      */
     public static void mostrarLlistaOrdenadesPerEdat(HashMap<String, Integer> persones) {
-
     }
 
     /**
@@ -226,8 +237,7 @@ public class Exercici0201 {
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0201#testMostrarFrecuenciaParaules
      */
-    public static void mostrarFrecuenciaParaules() {
-
+    public static void mostrarFrecuenciaParaules() {  
     }
 
     /**
@@ -243,8 +253,7 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testInvertirMapaClauValor
      */
     public static void invertirMapaClauValor() {
-
-    }
+    } 
 
     /**
      * Fusiona dos HashMap sumant els valors de les claus comuns.
@@ -263,23 +272,6 @@ public class Exercici0201 {
      * @test ./runTest.sh com.exercicis.TestExercici0201#testFusionarMapesSumantValors
      */
     public static void fusionarMapesSumantValors() {
-
-    }
-
-    /**
-     * Ordena un HashMap per les clausi mostra el resultat.
-     * 
-     * Es crea un HashMap amb elements (Banana=3, Poma=5, Taronja=2) 
-     * per obtenir un ordre natural de les claus (alfabètic).
-     * 
-     * 
-     * Es mostra per pantalla:
-     * "Mapa ordenat per claus: {Banana=3, Poma=5, Taronja=2}".
-     * 
-     * @test ./runTest.sh com.exercicis.TestExercici0201#testOrdenarMapaPerClaus
-     */
-    public static void ordenarMapaPerClaus() {
-
     }
 
     /**
@@ -288,13 +280,12 @@ public class Exercici0201 {
      * Es defineix un HashMap on la clau és el nom de l'estudiant i el valor la seva nota.
      * El mètode calcula la mitjana, la nota màxima i la nota mínima i les mostra per pantalla.
      * 
-     * 
-     * Es mostra per pantalla:
+     * Es mostra per pantalla amb 2 decimals:
      * "Mitjana: [valor], Màxim: [valor], Mínim: [valor]".
      * 
      * @test ./runTest.sh com.exercicis.TestExercici0201#testCalcularEstadistiquesNotesEstudiants
      */
-    public static void calcularEstadistiquesNotesEstudiants() {
-
+    public static void calcularEstadistiquesNotesEstudiants(HashMap<String, Double> estudiants) {
     }
+    
 }
