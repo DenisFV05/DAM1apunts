@@ -16,10 +16,7 @@ public class AppData {
     /**
      * Constructor privat que estableix la connexió a la base de dades.
      */
-    private AppData() {
-        // Connecta al crear la primera instància
-        connect();
-    }
+    private AppData() {  }
 
     /**
      * Retorna la instància única d'AppData.
@@ -38,10 +35,8 @@ public class AppData {
      * Utilitza la URL, l'usuari i la contrasenya especificats.
      * Desactiva l'autocommit per permetre el control manual de les transaccions.
      */
-    private void connect() {
-        String url = "jdbc:mysql://localhost:3308/world?useSSL=false&allowPublicKeyRetrieval=true";
-        String user = "root";
-        String password = "pwd";
+    public void connect(String path, String user, String password) {
+        String url = "jdbc:mysql:" + path;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");

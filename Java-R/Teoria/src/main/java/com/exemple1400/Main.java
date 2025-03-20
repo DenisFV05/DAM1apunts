@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Main {
+
+    // Fes anar l'exemple amb:
+    // ./run.sh com.exemple1400.Main
+
     public static void main(String[] args) {
 
         // Crear el singleton (això es connecta a la base de dades)
         AppData db = AppData.getInstance();
+        db.connect("./data/exemple1400.sqlite");
 
         System.out.println("\nIniciar les dades de la base de dades:");
         initData();
@@ -31,10 +36,12 @@ public class Main {
         db.update("DROP TABLE IF EXISTS animals");
 
         // Crear la taula 'animals'
-        db.update("CREATE TABLE IF NOT EXISTS animals (" +
-                "especie TEXT NOT NULL," +
-                "longevitat INTEGER," +
-                "numeropotes INTEGER)");
+        db.update("""
+            CREATE TABLE IF NOT EXISTS animals (
+                especie TEXT NOT NULL,
+                longevitat INTEGER,
+                numeropotes INTEGER)
+                """);
 
         // Inserir dades a la taula 'animals'
         db.update("INSERT INTO animals (especie, longevitat, numeropotes) VALUES ('Gos', 14, 4)");
