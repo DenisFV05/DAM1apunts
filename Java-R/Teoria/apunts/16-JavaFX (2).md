@@ -20,13 +20,17 @@ La manera d'organitzar els elements (widgets) de la interfície depèn dels prop
 
 Els widgets que permeten tenir altres widgets dins, tenen *"normes"* de posicionament.
 
-- **[AnchorPane](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/AnchorPane.html)**: Permet posar els widgets fills a una distància dels costats propis. 
+- **[HBox](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/HBox.html) i [VBox](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/VBox.html)**: Posisionen els widgets fills en vertical o hortizontal. 
 
-- **[HBox](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/HBox.html) i [VBox](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/VBox.html)**: Posisionen els widgets fills en vertical o hortizontal
+     **Molt útils** per espaiar i centrar elements, encara que tinguins dins un únic element.
+
+     **A més** afegeixen la opció *Hgrow* o *Vgrow* al layout dels fills, el què permet espaiar-los.
+
+- **[AnchorPane](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/AnchorPane.html)**: Permet posar els widgets fills a una distància dels costats propis. 
 
 - **[ScrollPane](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/ScrollPane.html)**: Permet afegir un "scroll" per mostrar els widgets fills que queden per fora de l'espai del propi widget *(fora del viewport)*.
 
-## Controls
+## Controls
 
 Els contols permeten interactuar amb l'aplicació.
 
@@ -38,3 +42,77 @@ Els contols permeten interactuar amb l'aplicació.
 
 - **[ImageView](https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/ImageView.html)**: Permet mostrar imatges a l'aplicació JavaFX
 
+## File Chooser
+
+El *File Chooser* permet escollir un arxiu del sistema d'arxius.
+
+Aquest Objecte permet:
+
+- Escollir arxius en mode **lectura**
+- Escollir arxius en mode **escriptura**
+
+## Exemple 1602
+
+Aquest exemple mostra com escollir arxius del sistema d'arxius:
+
+```java
+    // Carrega un arxiu .json a un quadre de text tipus "TextArea"
+    @FXML
+    private void actionLoadJSON() {
+        Stage stage = (Stage) buttonLoadJSON.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arxius JSON", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            try {
+                String content = new String(Files.readAllBytes(selectedFile.toPath()));
+                txt.setText(content); // "content" és el text que s'ha llegit de l'arxiu
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Guarda la informació d'un quadre de text tipus "TextArea" en un arxiu ".json"
+    @FXML
+    private void actionSaveJSON() {
+        Stage stage = (Stage) buttonSaveJSON.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arxius JSON", "*.json"));
+        File selectedFile = fileChooser.showSaveDialog(stage);
+        if (selectedFile != null) {
+            try {
+                String jsonData = txt.getText(); // "txt.getText()" conté el text .json que es vol guardar
+                if (jsonData.substring(0, 1).equalsIgnoreCase("[")) {
+                    JSONArray json = new JSONArray(jsonData);
+                    Files.write(selectedFile.toPath(), json.toString(4).getBytes());
+                } else {
+                    JSONObject json = new JSONObject(jsonData);
+                    Files.write(selectedFile.toPath(), json.toString(4).getBytes());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // Carrega una imatge del sistema en un element tipus "ImageView"
+    @FXML
+    private void actionLoadImage() {
+        Stage stage = (Stage) buttonLoadImage.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Imatges", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            try {
+                Image image = new Image(selectedFile.toURI().toString());
+                img.setImage(image);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+```
