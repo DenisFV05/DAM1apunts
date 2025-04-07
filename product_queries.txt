@@ -1,0 +1,53 @@
+--EXERCICI 1
+--productes que hi ha en cada magatzem de cada pais
+select p.product_name,p.product_id,wh.country_name, wh.country_id, wh.warehouse_name,i.quantity
+from (select w.warehouse_name,w.warehouse_id,c.country_name, c.country_id from warehouses w, locations l, countries c
+        where w.location_id=l.location_id and l.country_id=c.country_id) wh
+       JOIN  inventories i ON wh.warehouse_id=i.warehouse_id
+       JOIN  products p on i.product_id= p.product_id
+order by 1,2,3
+
+--DADES D'EXEMPLE PER L'EXERCICI 1
+.......producte             .id .......country_name        .id  ....warehouse_name  .quantity 
+Asus ROG MAXIMUS IX EXTREME	191	United States of America	US	Seattle, Washington	223
+Asus ROG MAXIMUS IX EXTREME	191	United States of America	US	San Francisco	    173
+
+
+--EXERCICI 2
+--productes, comandes del producte i clients
+select op.product_name, op.product_id,op.quantity, o.order_date,c.name,c.customer_id
+from customers c
+JOIN orders o ON c.customer_id=o.customer_id
+JOIN (select oi.order_id,p.product_name,oi.product_id,oi.quantity 
+	  from order_items oi 
+	  join products p on oi.product_id=p.product_id) op ON o.order_id=op.order_id
+order by 1,2,3
+
+--productes, comandes i clients del '0917', setembre de 21017
+select * from (
+	select op.product_name, op.product_id,op.quantity, o.order_date,c.name,c.customer_id
+	from customers c
+	JOIN orders o ON c.customer_id=o.customer_id
+	JOIN (select oi.order_id,p.product_name,oi.product_id,oi.quantity 
+		  from order_items oi 
+		  join products p on oi.product_id=p.product_id) op ON o.order_id=op.order_id
+	order by 1,2,3
+) oc
+where to_char(oc.order_date,'mmrr')='0917'
+
+--productes, comandes i clients del 2016 i 2017 del producte amb id 239
+select * from (
+	select op.product_name, op.product_id,op.quantity, o.order_date,c.name,c.customer_id
+	from customers c
+	JOIN orders o ON c.customer_id=o.customer_id
+	JOIN (select oi.order_id,p.product_name,oi.product_id,oi.quantity 
+		  from order_items oi 
+		  join products p on oi.product_id=p.product_id) op ON o.order_id=op.order_id
+	order by 1,2,3
+) oc
+where to_char(oc.order_date,'rr') in ('16','17') and oc.product_id=239
+
+--DADES D'EXEMPLE PER L'EXERCICI 2
+.......producte              .id    .quantitat  .data       ..nom client    .id 
+MSI GTX 1080 Ti DUKE 11G OC	 239	125	        28/09/17	Southern	    48
+MSI GTX 1080 Ti DUKE 11G OC	 239	71	        27/09/17	NextEra Energy	49

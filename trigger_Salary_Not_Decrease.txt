@@ -1,0 +1,12 @@
+--create a trigger “Salary_Not_Decrease” to ensure that the salary of an employee 
+--is not decreased during update of table Employee. 
+
+CREATE OR REPLACE TRIGGER Salary_Not_Decrease
+BEFORE INSERT OR UPDATE
+ON employees
+FOR EACH ROW 
+BEGIN 
+if :new.salary < :old.salary then 
+     RAISE_APPLICATION_ERROR(-20001,'Salary should not be decreased ') ;
+end if; 
+END;

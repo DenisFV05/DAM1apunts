@@ -1,0 +1,12 @@
+declare
+country_list 	varchar2(50):=',CA,JP,US,';
+cursor c_warehouses is
+    SELECT w.*
+    from warehouses w 
+    join locations l on w.LOCATION_ID=l.LOCATION_ID
+    and instr(country_list,','||l.country_id||',') > 0; 
+begin
+	for r_warehouse in c_warehouses loop
+		dbms_output.put_line('warehouse_name:'||r_warehouse.warehouse_name);
+	end loop;
+end;

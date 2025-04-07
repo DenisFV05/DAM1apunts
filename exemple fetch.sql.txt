@@ -1,0 +1,27 @@
+set SERVEROUTPUT on
+DECLARE
+    CURSOR cur is select * from regions where region_id in (1,2);
+    reg cur%rowtype;
+BEGIN
+    open cur;
+
+    fetch cur into reg;
+    if cur%found then DBMS_OUTPUT.PUT_LINE('FOUND'); END IF;
+    if cur%NOTfound then DBMS_OUTPUT.PUT_LINE('NOT FOUND'); END IF;
+    -- el fetch ha recuperat la primera fila i a la variable reg hi ha la informació recuperada
+    DBMS_OUTPUT.PUT_LINE('Region name ' || reg.region_name);
+
+    fetch cur into reg;
+    if cur%found then DBMS_OUTPUT.PUT_LINE('FOUND'); END IF;
+    if cur%NOTfound then DBMS_OUTPUT.PUT_LINE('NOT FOUND'); END IF;
+    -- el fetch ha recuperat la segona fila i a la variable reg hi ha la informació recuperada
+    DBMS_OUTPUT.PUT_LINE('Region name ' || reg.region_name);
+
+    fetch cur into reg;
+    if cur%found then DBMS_OUTPUT.PUT_LINE('FOUND'); END IF;
+    if cur%NOTfound then DBMS_OUTPUT.PUT_LINE('NOT FOUND'); END IF;
+    -- el fetch NO ha recuperat cap fila, però a la variable reg hi ha la informació de la darrera fila recuperada
+    DBMS_OUTPUT.PUT_LINE('Region name ' || reg.region_name);
+
+    close cur;
+end; 

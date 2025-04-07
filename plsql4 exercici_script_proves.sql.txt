@@ -1,0 +1,53 @@
+Exercici 1:
+
+SET SERVEROUTPUT ON
+DECLARE
+  in_country_id countries.country_id%type;
+  in_product_id products.product_id%Type;
+  v_Return NUMBER;
+BEGIN
+  in_product_id := 2345;
+  in_country_id := 'UK';
+  v_Return := f_magatzem_ex6(in_product_id,in_country_id);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+  in_product_id := 11;
+  in_country_id := 'UK';
+  v_Return := f_magatzem_ex6(in_product_id,in_country_id);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+  in_product_id := 11;
+  in_country_id := 'US';
+  v_Return := f_magatzem_ex6(in_product_id,in_country_id);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+END;
+
+Exercici 2:
+
+SET SERVEROUTPUT ON
+DECLARE
+  in_product_id products.product_id%Type;
+  in_data_ini orders.order_date%Type;
+  in_data_fi  orders.order_date%Type;
+  v_Return NUMBER;
+BEGIN
+  in_product_id := 2345;
+  in_data_ini := to_date('01/01/2015','DD/MM/YYYY');
+  in_data_fi  := to_date('31/12/2015','DD/MM/YYYY');
+  v_Return := f_customer_ex6(in_product_id,in_data_ini,in_data_fi);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+  in_product_id := 11;
+  in_data_ini := to_date('01/01/2015','DD/MM/YYYY');
+  in_data_fi  := to_date('31/12/2015','DD/MM/YYYY');
+  v_Return := f_customer_ex6(in_product_id,in_data_ini,in_data_fi);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+  in_product_id := 11;
+  in_data_ini := to_date('01/01/2015','DD/MM/YYYY');
+  in_data_fi  := to_date('31/12/2017','DD/MM/YYYY');
+  v_Return := f_customer_ex6(in_product_id,in_data_ini,in_data_fi);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+  in_product_id := 155;
+  in_data_ini := to_date('01/01/2016','DD/MM/YYYY');
+  in_data_fi  := to_date('31/12/2017','DD/MM/YYYY');
+  v_Return := f_customer_ex6(in_product_id,in_data_ini,in_data_fi);
+  DBMS_OUTPUT.PUT_LINE('v_Return f_magatzem_ex6= ' || v_Return);
+END;
+
