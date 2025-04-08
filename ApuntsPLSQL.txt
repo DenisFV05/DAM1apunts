@@ -309,3 +309,584 @@ END gestio_empleats;
 ---
 
 Copia este documento en tu entorno de consulta y utiliza los ejemplos como referencia para comprender y repasar la estructura y la lógica de cada ejercicio. ¡Mucho éxito en tu examen!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE FUNCTION calcular_descuento(p_total IN NUMBER) 
+RETURN NUMBER 
+IS
+    v_descuento NUMBER;
+BEGIN
+    IF p_total > 100 THEN
+        v_descuento := p_total * 0.1; -- 10% de descuento si el total es mayor que 100
+    ELSE
+        v_descuento := 0; -- Sin descuento
+    END IF;
+    RETURN v_descuento;
+END;
+
+
+CREATE OR REPLACE PROCEDURE actualizar_salario(p_id_empleado IN NUMBER, p_nuevo_salario IN NUMBER) 
+IS
+BEGIN
+    UPDATE empleados
+    SET salario = p_nuevo_salario
+    WHERE id_empleado = p_id_empleado;
+    COMMIT;
+END;
+
+
+CREATE OR REPLACE PACKAGE gestion_empleados AS
+    FUNCTION obtener_salario(p_id_empleado IN NUMBER) RETURN NUMBER;
+    PROCEDURE actualizar_direccion(p_id_empleado IN NUMBER, p_nueva_direccion IN VARCHAR2);
+END gestion_empleados;
+
+CREATE OR REPLACE PACKAGE BODY gestion_empleados AS
+    FUNCTION obtener_salario(p_id_empleado IN NUMBER) RETURN NUMBER IS
+        v_salario NUMBER;
+    BEGIN
+        SELECT salario INTO v_salario
+        FROM empleados
+        WHERE id_empleado = p_id_empleado;
+        RETURN v_salario;
+    END obtener_salario;
+
+    PROCEDURE actualizar_direccion(p_id_empleado IN NUMBER, p_nueva_direccion IN VARCHAR2) IS
+    BEGIN
+        UPDATE empleados
+        SET direccion = p_nueva_direccion
+        WHERE id_empleado = p_id_empleado;
+        COMMIT;
+    END actualizar_direccion;
+END gestion_empleados;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE TRIGGER trigger_salario
+AFTER UPDATE ON employees
+FOR EACH ROW
+BEGIN
+    INSERT INTO salario_changes (employee_id, old_salary, new_salary)
+    VALUES (:OLD.employee_id, :OLD.salary, :NEW.salary);
+END;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Estructura para una Función (Function)
+sql
+Copiar
+Editar
+CREATE OR REPLACE FUNCTION nombre_funcion (
+    parametro1 IN tipo, 
+    parametro2 IN tipo
+) RETURN tipo_resultado IS
+    -- Declaración de variables locales
+    variable tipo;
+BEGIN
+    -- Cuerpo de la función
+    SELECT columna INTO variable
+    FROM tabla
+    WHERE condicion;
+    
+    -- Retornar el resultado
+    RETURN variable;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Manejo de excepciones
+        RETURN NULL;
+    WHEN OTHERS THEN
+        -- Manejo de otros errores
+        RETURN NULL;
+END;
+Notas:
+
+Cambia los nombres de las variables, tablas y condiciones por los que corresponden en el examen.
+
+En la parte de excepciones puedes manejar errores comunes como NO_DATA_FOUND o OTHERS.
+
+Estructura para un Procedimiento (Procedure)
+sql
+Copiar
+Editar
+CREATE OR REPLACE PROCEDURE nombre_procedimiento (
+    parametro1 IN tipo, 
+    parametro2 OUT tipo
+) IS
+BEGIN
+    -- Cuerpo del procedimiento
+    -- Aquí puedes poner un SELECT o lógica que modifique variables o tablas
+    
+    SELECT columna
+    INTO parametro2
+    FROM tabla
+    WHERE condicion;
+
+    -- Puedes usar DBMS_OUTPUT.PUT_LINE para imprimir resultados en consola
+    DBMS_OUTPUT.PUT_LINE('Mensaje de salida');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Manejo de excepciones
+        DBMS_OUTPUT.PUT_LINE('No se encontraron datos');
+    WHEN OTHERS THEN
+        -- Otro tipo de error
+        DBMS_OUTPUT.PUT_LINE('Error desconocido');
+END;
+Notas:
+
+El procedimiento no retorna un valor como la función, pero puedes usar parámetros IN y OUT para pasar información.
+
+DBMS_OUTPUT.PUT_LINE sirve para imprimir mensajes durante la ejecución.
+
+Estructura para un Paquete (Package)
+Especificación del Paquete:
+sql
+Copiar
+Editar
+CREATE OR REPLACE PACKAGE nombre_paquete AS
+    -- Declaración de procedimientos y funciones disponibles
+    FUNCTION nombre_funcion(p_parametro IN tipo) RETURN tipo;
+    PROCEDURE nombre_procedimiento(p_parametro IN tipo);
+END nombre_paquete;
+Cuerpo del Paquete:
+sql
+Copiar
+Editar
+CREATE OR REPLACE PACKAGE BODY nombre_paquete AS
+    -- Implementación de la función
+    FUNCTION nombre_funcion(p_parametro IN tipo) RETURN tipo IS
+    BEGIN
+        -- Lógica de la función
+        RETURN resultado;
+    END nombre_funcion;
+
+    -- Implementación del procedimiento
+    PROCEDURE nombre_procedimiento(p_parametro IN tipo) IS
+    BEGIN
+        -- Lógica del procedimiento
+        DBMS_OUTPUT.PUT_LINE('Resultado: ' || p_parametro);
+    END nombre_procedimiento;
+END nombre_paquete;
+Notas:
+
+El paquete agrupa varias funciones y procedimientos relacionados.
+
+La especificación define las funciones/procedimientos disponibles.
+
+El cuerpo contiene la implementación.
+
+Consultas comunes para usar dentro de funciones/procedimientos:
+Obtener el nombre de un departamento:
+sql
+Copiar
+Editar
+SELECT department_name INTO v_department_name
+FROM departments
+WHERE department_id = p_id;
+Contar el número de empleados en un departamento:
+sql
+Copiar
+Editar
+SELECT COUNT(*) INTO v_count
+FROM employees
+WHERE department_id = p_id;
+Obtener el título del trabajo de un empleado:
+sql
+Copiar
+Editar
+SELECT job_title INTO v_job_title
+FROM employees
+WHERE employee_id = p_employee_id;
+Uso de Excepciones:
+sql
+Copiar
+Editar
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- No se encontraron datos
+        RETURN NULL;
+    WHEN OTHERS THEN
+        -- Captura cualquier otro error
+        RETURN NULL;
+Notas:
+
+Las excepciones ayudan a manejar posibles errores durante la ejecución de la consulta.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE FUNCTION calcular_comision_salesman (
+    p_employee_id NUMBER,
+    p_year        NUMBER
+) RETURN NUMBER IS
+    v_total_sales  NUMBER;             -- Total de importe vendido
+    v_order_count  NUMBER;             -- Número de órdenes
+    v_comision     NUMBER;             -- Comisión calculada
+    v_rate         NUMBER;             -- Tasa de comisión
+    v_job_title    VARCHAR2(100);
+    v_current_year NUMBER := EXTRACT(YEAR FROM SYSDATE);
+BEGIN
+    -- 1. Validar el título del empleado
+    SELECT job_title
+      INTO v_job_title
+      FROM employees
+     WHERE employee_id = p_employee_id;
+     
+    IF v_job_title NOT IN ('Sales Manager', 'Sales Representative') THEN
+        RETURN NULL;
+    END IF;
+    
+    -- 2. Validar el año: debe estar entre 2000 y el año actual
+    IF p_year > v_current_year OR p_year < 2000 THEN
+        RETURN NULL;
+    END IF;
+    
+    -- 3. Obtener el total de ventas y número de órdenes en el año indicado
+    SELECT NVL(SUM(amount), 0), COUNT(*)
+      INTO v_total_sales, v_order_count
+      FROM orders
+     WHERE salesman_id = p_employee_id
+       AND EXTRACT(YEAR FROM order_date) = p_year;
+    
+    -- 4. Definir la tasa de comisión según el total vendido
+    IF v_total_sales > 10000 THEN
+        v_rate := 0.15;
+    ELSIF v_total_sales > 5000 THEN
+        v_rate := 0.10;
+    ELSE
+        v_rate := 0.05;
+    END IF;
+    
+    -- 5. Calcular la comisión
+    v_comision := v_total_sales * v_rate;
+    
+    RETURN v_comision;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RETURN NULL;
+    WHEN OTHERS THEN
+        RETURN NULL;
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE PROCEDURE generar_reporte_empleados_departamento(
+    p_department_id IN departments.department_id%TYPE
+) IS
+    v_department_name departments.department_name%TYPE;
+    v_total_empleados NUMBER;
+    CURSOR c_empleados IS
+        SELECT first_name, last_name, 
+               TO_CHAR(hire_date, 'DD-MM-YYYY') AS hire_date, 
+               job_title
+          FROM employees
+         WHERE department_id = p_department_id
+         ORDER BY last_name;
+BEGIN
+    -- Validar que p_department_id no sea NULL
+    IF p_department_id IS NULL THEN
+        DBMS_OUTPUT.PUT_LINE('El ID del departamento no puede ser NULL.');
+        RETURN;
+    END IF;
+    
+    -- Verificar que el departamento exista
+    BEGIN
+        SELECT department_name INTO v_department_name
+          FROM departments
+         WHERE department_id = p_department_id;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            DBMS_OUTPUT.PUT_LINE('Departamento no encontrado.');
+            RETURN;
+    END;
+    
+    -- Contar el número de empleados en el departamento
+    SELECT COUNT(*) INTO v_total_empleados
+      FROM employees
+     WHERE department_id = p_department_id;
+    
+    -- Mostrar encabezado del reporte
+    DBMS_OUTPUT.PUT_LINE('Reporte del Departamento: ' || v_department_name);
+    DBMS_OUTPUT.PUT_LINE('---------------------------------------------------');
+    
+    IF v_total_empleados = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('No hay empleados en este departamento.');
+    ELSE
+        -- Recorrer el cursor y mostrar cada empleado en formato fijo
+        FOR rec IN c_empleados LOOP
+            DBMS_OUTPUT.PUT_LINE(
+                RPAD(rec.first_name, 15) || 
+                RPAD(rec.last_name, 15)  ||
+                RPAD(rec.hire_date, 15)  ||
+                rec.job_title
+            );
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('Total de empleados: ' || v_total_empleados);
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Se produjo un error: ' || SQLERRM);
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE OR REPLACE PACKAGE pkg_utilidades_hr AS
+    FUNCTION normalizar_string(p_texto VARCHAR2, p_convertir BOOLEAN) RETURN VARCHAR2;
+    FUNCTION obtener_nombre_completo(p_employee_id NUMBER) RETURN VARCHAR2;
+    FUNCTION calcular_antiguedad(p_employee_id NUMBER) RETURN NUMBER;
+END pkg_utilidades_hr;
+/
+
+CREATE OR REPLACE PACKAGE BODY pkg_utilidades_hr AS
+
+    -- Función para normalizar una cadena
+    FUNCTION normalizar_string(p_texto VARCHAR2, p_convertir BOOLEAN) RETURN VARCHAR2 IS
+        v_resultado VARCHAR2(200) := '';
+        v_palabra   VARCHAR2(50);
+        v_temp      VARCHAR2(200);
+        v_pos       NUMBER;
+    BEGIN
+        IF p_texto IS NULL THEN
+            RETURN NULL;
+        END IF;
+        v_temp := TRIM(p_texto);
+        LOOP
+            v_pos := INSTR(v_temp, ' ');
+            IF v_pos = 0 THEN
+                v_palabra := v_temp;
+            ELSE
+                v_palabra := SUBSTR(v_temp, 1, v_pos - 1);
+            END IF;
+            
+            IF p_convertir THEN
+                -- INITCAP convierte la palabra: primera letra mayúscula, resto minúscula
+                v_palabra := INITCAP(v_palabra);
+            END IF;
+            
+            IF v_resultado IS NULL OR v_resultado = '' THEN
+                v_resultado := v_palabra;
+            ELSE
+                v_resultado := v_resultado || ' ' || v_palabra;
+            END IF;
+            
+            IF v_pos = 0 THEN
+                EXIT;
+            END IF;
+            v_temp := LTRIM(SUBSTR(v_temp, v_pos + 1));
+        END LOOP;
+        RETURN v_resultado;
+    END normalizar_string;
+    
+    -- Función que obtiene el nombre completo de un empleado
+    FUNCTION obtener_nombre_completo(p_employee_id NUMBER) RETURN VARCHAR2 IS
+        v_first_name employees.first_name%TYPE;
+        v_last_name  employees.last_name%TYPE;
+    BEGIN
+        SELECT first_name, last_name
+          INTO v_first_name, v_last_name
+          FROM employees
+         WHERE employee_id = p_employee_id;
+         
+        RETURN v_first_name || ' ' || v_last_name;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN 'Empleado no encontrado';
+    END obtener_nombre_completo;
+    
+    -- Función que calcula la antigüedad (en años) de un empleado
+    FUNCTION calcular_antiguedad(p_employee_id NUMBER) RETURN NUMBER IS
+        v_hire_date employees.hire_date%TYPE;
+        v_anios NUMBER;
+    BEGIN
+        SELECT hire_date
+          INTO v_hire_date
+          FROM employees
+         WHERE employee_id = p_employee_id;
+         
+        -- Calcular años completos entre la fecha actual y la fecha de contratación
+        v_anios := TRUNC(MONTHS_BETWEEN(SYSDATE, v_hire_date) / 12);
+        RETURN v_anios;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN NULL;
+    END calcular_antiguedad;
+
+END pkg_utilidades_hr;
+/
