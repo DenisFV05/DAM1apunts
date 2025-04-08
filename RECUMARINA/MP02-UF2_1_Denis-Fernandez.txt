@@ -1,0 +1,44 @@
+use CustProd;
+
+/* 1*/
+SELECT p.productVendor, pl.productLine, COUNT(*) AS cantidad_productos
+FROM products p
+JOIN productlines pl ON p.productLine = pl.productLine
+GROUP BY p.productVendor, pl.productLine
+ORDER BY p.productVendor, pl.productLine;
+
+/* 2*/
+SELECT pl.productLine, COUNT(DISTINCT p.productVendor) AS cantidad_vendedores
+FROM products p
+JOIN productlines pl ON p.productLine = pl.productLine
+GROUP BY pl.productLine
+ORDER BY cantidad_vendedores DESC;
+
+/* 3*/
+SELECT c.customerNumber, c.customerName, c.city, c.country,
+       o.orderDate,
+       GROUP_CONCAT(CONCAT(p.productVendor, ' - ', p.productName) SEPARATOR ', ') AS productos_comprados
+FROM customers c
+JOIN orders o ON c.customerNumber = o.customerNumber
+JOIN orderdetails od ON o.orderNumber = od.orderNumber
+JOIN products p ON od.productCode = p.productCode
+WHERE c.country = 'France'
+  AND p.productVendor = 'Motor City Art Classics'
+GROUP BY c.customerNumber, o.orderDate
+ORDER BY c.customerNumber, o.orderDate;
+
+
+/* 4*/
+SELECT p.productName,
+       o.orderNumber, o.orderDate,
+       c.customerNumber, c.customerName
+FROM products p
+JOIN orderdetails od ON p.productCode = od.productCode
+JOIN orders o ON od.orderNumber = o.orderNumber
+JOIN customers c ON o.customerNumber = c.customerNumber
+WHERE p.productLine = 'Classic Cars'
+  AND o.orderDate BETWEEN '2005-01-01' AND '2005-03-31'
+  AND c.country = 'USA'
+ORDER BY p.productName, o.orderDate;
+
+

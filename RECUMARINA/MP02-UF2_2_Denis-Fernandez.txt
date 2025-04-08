@@ -1,0 +1,46 @@
+use hr;
+
+/* 1 */
+SELECT d.department_id, d.department_name, e.employee_id AS manager_id, e.last_name AS manager_last_name, e.first_name AS manager_first_name
+FROM departments d
+JOIN employees e ON d.manager_id = e.employee_id
+WHERE d.department_id IN (
+    SELECT department_id
+    FROM employees
+    GROUP BY department_id
+    HAVING COUNT(*) > 5
+);
+
+/* 2 */
+SELECT d.department_name, COUNT(e.employee_id) AS num_employees
+FROM departments d
+JOIN locations l ON d.location_id = l.location_id
+JOIN countries c ON l.country_id = c.country_id
+JOIN employees e ON d.department_id = e.department_id
+WHERE c.country_name = 'United Kingdom'
+GROUP BY d.department_name
+ORDER BY d.department_name;
+
+
+/* 3 */
+SELECT e.employee_id, e.first_name, e.last_name,
+       j.job_title AS job_title, d.department_name,
+       jh.start_date, jh.end_date
+FROM employees e
+JOIN job_history jh ON e.employee_id = jh.employee_id
+JOIN jobs j ON jh.job_id = j.job_id
+JOIN departments d ON jh.department_id = d.department_id
+ORDER BY e.employee_id, jh.start_date;
+
+
+/* 4 */
+SELECT e.employee_id, e.first_name, e.last_name, 
+       j.job_title AS job_title, 
+       DATE_ADD(MAX(jh.end_date), INTERVAL 1 DAY) AS start_date_current_job
+FROM employees e
+JOIN job_history jh ON e.employee_id = jh.employee_id
+JOIN jobs j ON jh.job_id = j.job_id
+WHERE e.employee_id = 101
+GROUP BY e.employee_id, e.first_name, e.last_name, j.job_title;
+
+
