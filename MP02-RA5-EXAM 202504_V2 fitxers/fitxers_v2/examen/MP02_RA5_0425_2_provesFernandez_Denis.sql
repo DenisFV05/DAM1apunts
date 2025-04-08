@@ -1,0 +1,28 @@
+
+
+
+declare
+tot_emp number(3):=null;
+begin
+
+---paràmetre null
+tot_emp:=null;
+DBMS_OUTPUT.PUT_LINE('--------------- Crida amb  '||nvl(to_char(tot_emp),'null')|| ' mànagers');
+p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+---0 mànagers
+tot_emp:=0;
+DBMS_OUTPUT.PUT_LINE('--------------- Crida amb  '||nvl(to_char(tot_emp),'null')|| ' mànagers');
+p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+---4 mànagers
+tot_emp:=4;
+DBMS_OUTPUT.PUT_LINE('--------------- Crida amb  '||nvl(to_char(tot_emp),'null')|| ' mànagers');
+p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+---15 mànagers
+tot_emp:=15;
+DBMS_OUTPUT.PUT_LINE('--------------- Crida amb  '||nvl(to_char(tot_emp),'null')|| ' mànagers');
+p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+end;

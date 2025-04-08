@@ -27,7 +27,7 @@ DECLARE
     preu NUMBER;
 BEGIN
     preu := retornar_preu(254);
-    DBMS_OUTPUT.PUT_LINE("Preu total del producte amb id 254" || preu);
+    DBMS_OUTPUT.PUT_LINE(reu total del producte amb id 254" || preu);
 END;
 
 --EXERCICI 2 – PROCEDURE (BD HR) (3,5 punts)
