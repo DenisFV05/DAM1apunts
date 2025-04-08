@@ -14,8 +14,7 @@ grant create view to botiga;
 commit;
 
 
-
-
+https://livesql.oracle.com/next/
 
 
 
