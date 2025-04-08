@@ -411,6 +411,34 @@ END;
 
 
 
+DECLARE
+    -- Declaración del cursor
+    CURSOR c_empleados IS
+        SELECT id, nombre, salario FROM empleados WHERE salario > 3000;
+    
+    -- Variables para almacenar los valores de cada fila
+    v_id empleados.id%TYPE;
+    v_nombre empleados.nombre%TYPE;
+    v_salario empleados.salario%TYPE;
+BEGIN
+    -- Abrir el cursor
+    OPEN c_empleados;
+    
+    -- Recorrer las filas obtenidas con el cursor
+    LOOP
+        -- Obtener cada fila del cursor
+        FETCH c_empleados INTO v_id, v_nombre, v_salario;
+        
+        -- Si no hay más filas, salir del bucle
+        EXIT WHEN c_empleados%NOTFOUND;
+        
+        -- Procesar los datos
+        DBMS_OUTPUT.PUT_LINE('Empleado: ' || v_nombre || ', Salario: ' || v_salario);
+    END LOOP;
+    
+    -- Cerrar el cursor
+    CLOSE c_empleados;
+END;
 
 
 
