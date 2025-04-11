@@ -48,7 +48,6 @@ public class ControllerPokeList {
             String name = (String) pokemon.get("name");
             String type = (String) pokemon.get("type");
             String imagePath = (String) pokemon.get("image");
-            System.out.println(name);
 
             // Carregar el template
             FXMLLoader loader = new FXMLLoader(resource);
@@ -68,6 +67,8 @@ public class ControllerPokeList {
 
     @FXML
     public void addPokemon(ActionEvent event) {
-        //TODO
+        ControllerPokeForm ctrl = (ControllerPokeForm) UtilsViews.getController("ViewForm");
+        ctrl.setStatus(ControllerPokeForm.STATUS_ADD, -1);
+        UtilsViews.setViewAnimating("ViewForm");
     }
 }
