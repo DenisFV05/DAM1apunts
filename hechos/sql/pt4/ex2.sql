@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION F_update_inventory_Bargados_D (
+CREATE OR REPLACE FUNCTION F_update_inventory_Fernandez_D (
     p_codi_producte IN NUMBER,
     p_warehouse_id IN NUMBER,
     p_quantitat IN NUMBER

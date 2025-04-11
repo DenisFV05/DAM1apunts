@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION F_salari_total_rang_Bargados_D ( 
+CREATE OR REPLACE FUNCTION F_salari_total_rang_Fernandez_D ( 
     p_rang1 IN NUMBER, 
     p_rang2 IN NUMBER 
 ) 
@@ -56,13 +56,13 @@ END;
 DECLARE
     v_total NUMBER;
 BEGIN
-    v_total := F_salari_total_rang_Bargados_D(3000, 7000);
+    v_total := F_salari_total_rang_Fernandez_D(3000, 7000);
     DBMS_OUTPUT.PUT_LINE('Salari total (3000-7000): ' || v_total);
 
-    v_total := F_salari_total_rang_Bargados_D(NULL, NULL);
+    v_total := F_salari_total_rang_Fernandez_D(NULL, NULL);
     DBMS_OUTPUT.PUT_LINE('Salari total (NULL, NULL): ' || v_total);
 
-    v_total := F_salari_total_rang_Bargados_D(NULL, 7000);
+    v_total := F_salari_total_rang_Fernandez_D(NULL, 7000);
     DBMS_OUTPUT.PUT_LINE('Salari total (NULL, 7000): ' || v_total);
 END;
 

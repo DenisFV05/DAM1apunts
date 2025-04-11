@@ -3,7 +3,7 @@ CREATE SEQUENCE SEQ_INVENTORIES_LOG START WITH 1;
 
 
 
-CREATE OR REPLACE TRIGGER TR_inventory_log_Bargados
+CREATE OR REPLACE TRIGGER TR_inventory_log_Fernandez
 AFTER INSERT OR UPDATE ON inventories
 FOR EACH ROW
 DECLARE
@@ -15,7 +15,7 @@ END;
 
 
 
-CREATE OR REPLACE PROCEDURE P_inventories_log_init_Bargados_D IS
+CREATE OR REPLACE PROCEDURE P_inventories_log_init_Fernandez_D IS
 BEGIN
     FOR inventory IN (SELECT product_id, warehouse_id, quantity FROM inventories) LOOP
         INSERT INTO inventories_log (ilog_id, product_id, warehouse_id, quantity, created_at)

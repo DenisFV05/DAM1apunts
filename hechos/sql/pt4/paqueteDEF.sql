@@ -2,7 +2,7 @@ CREATE SEQUENCE SEQ_INVENTORIES_LOG START WITH 1;
 
 
 
-CREATE OR REPLACE TRIGGER TR_inventory_log_Bargados
+CREATE OR REPLACE TRIGGER TR_inventory_log_Fernandez
 AFTER INSERT OR UPDATE ON inventories
 FOR EACH ROW
 BEGIN
@@ -10,25 +10,25 @@ BEGIN
     VALUES (SEQ_INVENTORIES_LOG.NEXTVAL, :NEW.product_id, :NEW.warehouse_id, :NEW.quantity, SYSDATE);
 END;
 
-CREATE OR REPLACE PACKAGE PKG_update_inventories_Bargados_D AS
-    FUNCTION F_update_inventory_Bargados_D(
+CREATE OR REPLACE PACKAGE PKG_update_inventories_Fernandez_D AS
+    FUNCTION F_update_inventory_Fernandez_D(
         p_codi_producte IN NUMBER,
         p_warehouse_id IN NUMBER,
         p_quantitat IN NUMBER
     ) RETURN BOOLEAN;
     
-    FUNCTION F_update_inventories_Bargados_D(
+    FUNCTION F_update_inventories_Fernandez_D(
         p_codi_producte IN NUMBER,
         p_codis_pais IN VARCHAR2,
         p_quantitat IN NUMBER
     ) RETURN NUMBER;
-    PROCEDURE P_inventories_log_init_Bargados_D;
+    PROCEDURE P_inventories_log_init_Fernandez_D;
 
 END;
 /
 
-CREATE OR REPLACE PACKAGE BODY PKG_update_inventories_Bargados_D AS
-    FUNCTION F_update_inventory_Bargados_D (
+CREATE OR REPLACE PACKAGE BODY PKG_update_inventories_Fernandez_D AS
+    FUNCTION F_update_inventory_Fernandez_D (
         p_codi_producte IN NUMBER,
         p_warehouse_id IN NUMBER,
         p_quantitat IN NUMBER
@@ -59,9 +59,9 @@ CREATE OR REPLACE PACKAGE BODY PKG_update_inventories_Bargados_D AS
             RETURN TRUE;
         WHEN OTHERS THEN
             RETURN FALSE;
-    END F_update_inventory_Bargados_D;
+    END F_update_inventory_Fernandez_D;
 
-    FUNCTION F_update_inventories_Bargados_D(
+    FUNCTION F_update_inventories_Fernandez_D(
         p_codi_producte IN NUMBER,
         p_codis_pais IN VARCHAR2,
         p_quantitat IN NUMBER
@@ -111,7 +111,7 @@ CREATE OR REPLACE PACKAGE BODY PKG_update_inventories_Bargados_D AS
         END IF;
         
         FOR wh IN c_warehouses LOOP
-            IF F_update_inventory_Bargados_D(p_codi_producte, wh.warehouse_id, p_quantitat) THEN
+            IF F_update_inventory_Fernandez_D(p_codi_producte, wh.warehouse_id, p_quantitat) THEN
                 v_total_reposat := v_total_reposat + p_quantitat;
             END IF;
         END LOOP;
@@ -123,16 +123,16 @@ CREATE OR REPLACE PACKAGE BODY PKG_update_inventories_Bargados_D AS
         RETURN v_total_reposat;
     EXCEPTION
         WHEN OTHERS THEN RETURN -1;
-    END F_update_inventories_Bargados_D;
+    END F_update_inventories_Fernandez_D;
 
-    PROCEDURE P_inventories_log_init_Bargados_D IS
+    PROCEDURE P_inventories_log_init_Fernandez_D IS
     BEGIN
         FOR inventory IN (SELECT product_id, warehouse_id, quantity FROM inventories) LOOP
             INSERT INTO inventories_log (ilog_id, product_id, warehouse_id, quantity, created_at)
             VALUES (SEQ_INVENTORIES_LOG.NEXTVAL, inventory.product_id, inventory.warehouse_id, inventory.quantity, SYSDATE);
         END LOOP;
         COMMIT;
-    END P_inventories_log_init_Bargados_D;
+    END P_inventories_log_init_Fernandez_D;
 END; 
 
 
@@ -140,13 +140,13 @@ END;
 DECLARE
     v_result NUMBER;
 BEGIN
-    v_result := PKG_update_inventories_Bargados_D.F_update_inventories_Bargados_D(101, 'CN,US,AU', 1);
+    v_result := PKG_update_inventories_Fernandez_D.F_update_inventories_Fernandez_D(101, 'CN,US,AU', 1);
     DBMS_OUTPUT.PUT_LINE('Inventari actualizat: ' || v_result);
     
-    v_result := PKG_update_inventories_Bargados_D.F_update_inventories_Bargados_D(101, 'CN,XX,AU', 1);
+    v_result := PKG_update_inventories_Fernandez_D.F_update_inventories_Fernandez_D(101, 'CN,XX,AU', 1);
     DBMS_OUTPUT.PUT_LINE('Llista invalida: ' || v_result);
     
-    v_result := PKG_update_inventories_Bargados_D.F_update_inventories_Bargados_D(101, 'FR,DE,UK', 1);
+    v_result := PKG_update_inventories_Fernandez_D.F_update_inventories_Fernandez_D(101, 'FR,DE,UK', 1);
     DBMS_OUTPUT.PUT_LINE('Pais sense magatzems: ' || v_result);
 END;
 

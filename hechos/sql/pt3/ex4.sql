@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION quantitat_producte_BargadosD(
+CREATE OR REPLACE FUNCTION quantitat_producte_FernandezD(
     v_pais IN VARCHAR2,
     v_categoria IN VARCHAR2
 )
@@ -34,7 +34,7 @@ END;
 DECLARE
     resultat NUMBER;
 BEGIN
-    resultat := quantitat_producte_BargadosD('Australia', 'CPU');
+    resultat := quantitat_producte_FernandezD('Australia', 'CPU');
     DBMS_OUTPUT.PUT_LINE('Total  disponibles: ' || resultat);
 END;
 /

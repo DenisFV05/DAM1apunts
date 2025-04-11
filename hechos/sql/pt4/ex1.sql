@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION F_update_inventories_Bargados_D(
+CREATE OR REPLACE FUNCTION F_update_inventories_Fernandez_D(
         p_codi_producte IN NUMBER,
         p_codis_pais IN VARCHAR2,
         p_quantitat IN NUMBER
@@ -48,7 +48,7 @@ CREATE OR REPLACE FUNCTION F_update_inventories_Bargados_D(
         END IF;
         
         FOR wh IN c_warehouses LOOP
-            IF F_update_inventory_Bargados_D(p_codi_producte, wh.warehouse_id, p_quantitat) THEN
+            IF F_update_inventory_Fernandez_D(p_codi_producte, wh.warehouse_id, p_quantitat) THEN
                 v_total_reposat := v_total_reposat + p_quantitat;
             END IF;
         END LOOP;
@@ -60,4 +60,4 @@ CREATE OR REPLACE FUNCTION F_update_inventories_Bargados_D(
         RETURN v_total_reposat;
     EXCEPTION
         WHEN OTHERS THEN RETURN -1;
-    END F_update_inventories_Bargados_D;
+    END F_update_inventories_Fernandez_D;
