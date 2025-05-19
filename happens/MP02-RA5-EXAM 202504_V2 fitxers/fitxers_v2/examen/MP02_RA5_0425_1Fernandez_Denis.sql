@@ -12,26 +12,44 @@
 
 -- return final QUANTITAT TOAL DE PRODUCTE VENUT EN 2017
 
-CREATE OR REPLACE FUNCTION f_prod_2017_Fernandez_Denis(nom_producte IN VARCHAR2) RETURN NUMBER
-IS vquantitat NUMBER;
+CREATE OR REPLACE FUNCTION f_prod_2017_Fernandez_Denis(nom_producte IN VARCHAR2)
+RETURN NUMBER
+IS
+    v_total NUMBER := 0;
+    v_existe NUMBER := 0;
 BEGIN
+    -- Comprobamos si el parámetro es NULL
     IF nom_producte IS NULL THEN
         RETURN NULL;
-    -- comprobar si es unico
     END IF;
 
-    SELECT COUNT(*) INTO vquantitat, product_name
-    FROM ORDERS, PRODUCTS
-    WHERE EXTRACT(YEAR FROM order_date) = p_year
-      AND product_name = nom_producte;
+    -- Comprobamos si existe al menos un producto con ese nombre
+    SELECT COUNT(*) INTO v_existe
+    FROM products
+    WHERE product_name = nom_producte;
 
-    IF vquantitat IS NULL THEN
-        DBMS_OUTPUT.PUT_LINE('Producte'|| nom_producte ||'sense comandes l?any 2017');
-        RETURN NUMBER=:0;
-    ELSE 
-        DBMS_OUTPUT.PUT_LINE("L'any 2017 la quantitat de producte" || nom_producte ||' venut és:' || vquantitat);
-        RETURN vquantitat;
+    IF v_existe = 0 THEN
+        RETURN NULL;
+    END IF;
 
-    END;
+    -- Calculamos la cantidad total vendida en 2017
+    SELECT NVL(SUM(oi.quantity), 0)
+    INTO v_total
+    FROM order_items oi
+    JOIN orders o ON oi.order_id = o.order_id
+    JOIN products p ON oi.product_id = p.product_id
+    WHERE p.product_name = nom_producte
+      AND EXTRACT(YEAR FROM o.order_date) = 2017;
+
+    IF v_total = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Producte ' || nom_producte || ' sense comandes l’any 2017');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('L’any 2017 la quantitat de producte ' || nom_producte || ' venut és: ' || v_total);
+    END IF;
+
+    RETURN v_total;
+END;
+/
+
 
 
