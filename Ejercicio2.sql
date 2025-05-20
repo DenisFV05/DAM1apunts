@@ -46,3 +46,28 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('TOTAL found: ' || v_total);
 END;
 /
+
+DECLARE
+    tot_emp NUMBER(3) := NULL;
+BEGIN
+    -- Paràmetre NULL
+    tot_emp := NULL;
+    DBMS_OUTPUT.PUT_LINE('--------------- Crida amb ' || NVL(TO_CHAR(tot_emp), 'NULL') || ' mànagers');
+    p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+    -- 0 mànagers
+    tot_emp := 0;
+    DBMS_OUTPUT.PUT_LINE('--------------- Crida amb ' || NVL(TO_CHAR(tot_emp), 'NULL') || ' mànagers');
+    p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+    -- 4 mànagers
+    tot_emp := 4;
+    DBMS_OUTPUT.PUT_LINE('--------------- Crida amb ' || NVL(TO_CHAR(tot_emp), 'NULL') || ' mànagers');
+    p_last_managers_hired_Fernandez_Denis(tot_emp);
+
+    -- 15 mànagers
+    tot_emp := 15;
+    DBMS_OUTPUT.PUT_LINE('--------------- Crida amb ' || NVL(TO_CHAR(tot_emp), 'NULL') || ' mànagers');
+    p_last_managers_hired_Fernandez_Denis(tot_emp);
+END;
+/

@@ -1,38 +1,34 @@
+-- SCRIPT DE PROVES MODIFICAT
 
+-- Proves f_empleat_per_cognom_i_nom i f_empleat_per_cognom
+DECLARE
+   v_emp employees%ROWTYPE;
+BEGIN
+   v_emp := pkg_employees0425_Fernandez_Denis.f_empleat_per_cognom_i_nom(100, '        CHEN', 'JOHN         ');
+   dbms_output.put_line('treballador: ' || v_emp.employee_id);
 
+   v_emp := pkg_employees0425_Fernandez_Denis.f_empleat_per_cognom(100, 'Chen           ');
+   dbms_output.put_line('treballador: ' || v_emp.employee_id);
 
+   v_emp := pkg_employees0425_Fernandez_Denis.f_empleat_per_cognom_i_nom(80, 'Cambrault', 'Gerald');
+   dbms_output.put_line('treballador: ' || v_emp.employee_id);
 
---SCRIPT DE PROVES f_empleat_per_cognom_i_nom
-declare
-v_emp employees%rowtype;
-begin
-
-v_emp:=f_empleat_per_cognom_i_nom(100,'        CHEN','JOHN         ');
-dbms_output.put_line('treballador: '||v_emp.employee_id);
-
-v_emp:=f_empleat_per_cognom(100,'Chen           ');
-dbms_output.put_line('treballador: '||v_emp.employee_id);
-
-v_emp:=f_empleat_per_cognom_i_nom(80,'Cambrault','Gerald');
-dbms_output.put_line('treballador: '||v_emp.employee_id);
-
-v_emp:=f_empleat_per_cognom(80,'Cambrault');
-dbms_output.put_line('treballador: '||v_emp.employee_id);
-end;
-
+   v_emp := pkg_employees0425_Fernandez_Denis.f_empleat_per_cognom(80, 'Cambrault');
+   dbms_output.put_line('treballador: ' || v_emp.employee_id);
+END;
 /
 
---SCRIPT DE PROVES f_job
-declare
-v_id jobs.job_id%type;
-begin
+-- Proves f_job
+DECLARE
+   v_id jobs.job_id%TYPE;
+BEGIN
+   v_id := pkg_jobs0425_Fernandez_Denis.f_job('President');
+   dbms_output.put_line('job id és: ' || v_id);
 
-v_id:=f_job('President');
-dbms_output.put_line('job id és: '||v_id);
+   v_id := pkg_jobs0425_Fernandez_Denis.f_job('  President ');
+   dbms_output.put_line('job id és: ' || v_id);
 
-v_id:=f_job('  President ');
-dbms_output.put_line('job id és: '||v_id);
-
-v_id:=f_job(' accounting     manager');
-dbms_output.put_line('job id és: '||v_id);
-end;
+   v_id := pkg_jobs0425_Fernandez_Denis.f_job(' accounting     manager');
+   dbms_output.put_line('job id és: ' || v_id);
+END;
+/
