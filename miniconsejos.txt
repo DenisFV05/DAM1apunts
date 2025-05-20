@@ -1,0 +1,154 @@
+--==============================================
+-- ✅ FUNCIONES CLAVE EN PL/SQL
+--==============================================
+
+-- ▶️ SUM + NVL → Para evitar NULL si no hay datos:
+SELECT NVL(SUM(cantidad * precio_unitario), 0)
+FROM ventas
+WHERE id_venta = 101;
+
+-- Explicación:
+-- - SUM(...) suma el total de cada línea (cantidad * precio_unitario)
+-- - Si no hay datos, SUM devuelve NULL
+-- - NVL(..., 0) convierte ese NULL en 0 para evitar problemas
+
+--==============================================
+-- ✅ CÁLCULO DE ANTIGÜEDAD EN AÑOS
+--==============================================
+SELECT ROUND(MONTHS_BETWEEN(SYSDATE, fecha_contrato) / 12, 2)
+FROM empleados;
+
+-- O usando días:
+SELECT ROUND((SYSDATE - fecha_contrato) / 365.25, 2)
+FROM empleados;
+
+-- 365.25 = años promedio teniendo en cuenta años bisiestos
+
+--==============================================
+-- ✅ FUNCIÓN dentro de un PACKAGE
+--==============================================
+
+-- CABECERA:
+CREATE OR REPLACE PACKAGE pkg_empleados IS
+  FUNCTION f_antiguedad(p_id IN empleados.employee_id%TYPE) RETURN NUMBER;
+END;
+/
+
+-- CUERPO:
+CREATE OR REPLACE PACKAGE BODY pkg_empleados IS
+
+  FUNCTION f_antiguedad(p_id IN empleados.employee_id%TYPE) RETURN NUMBER IS
+    v_fecha empleados.hire_date%TYPE;
+    v_resultado NUMBER;
+  BEGIN
+    SELECT hire_date INTO v_fecha
+    FROM empleados
+    WHERE employee_id = p_id;
+
+    v_resultado := (SYSDATE - v_fecha) / 365.25;
+
+    RETURN ROUND(v_resultado, 2);
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RETURN -1;
+  END;
+
+END;
+/
+
+-- Tips:
+-- - La cabecera solo declara la función.
+-- - El cuerpo contiene la lógica (SELECT, cálculos...).
+-- - Se puede capturar errores como NO_DATA_FOUND si el ID no existe.
+
+--==============================================
+-- ✅ PROCEDURE con parámetros de entrada y salida
+--==============================================
+
+CREATE OR REPLACE PROCEDURE p_total_ventas (
+  p_cliente_id IN ventas.cliente_id%TYPE,
+  p_total OUT NUMBER
+) IS
+BEGIN
+  SELECT NVL(SUM(v.precio_unitario * v.cantidad), 0)
+  INTO p_total
+  FROM ventas v
+  WHERE v.cliente_id = p_cliente_id;
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    p_total := 0;
+END;
+/
+
+-- Uso:
+-- Variable de salida que guarda el total de ventas del cliente
+
+--==============================================
+-- ✅ PACKAGE con FUNCTION y PROCEDURE (ejemplo combinado)
+--==============================================
+
+-- CABECERA:
+CREATE OR REPLACE PACKAGE pkg_inventario IS
+  PROCEDURE p_stock_producto(p_producto_id IN productos.product_id%TYPE);
+  FUNCTION f_total_stock RETURN NUMBER;
+END;
+/
+
+-- CUERPO:
+CREATE OR REPLACE PACKAGE BODY pkg_inventario IS
+
+  PROCEDURE p_stock_producto(p_producto_id IN productos.product_id%TYPE) IS
+    v_stock NUMBER;
+  BEGIN
+    SELECT cantidad INTO v_stock
+    FROM inventario
+    WHERE product_id = p_producto_id;
+
+    DBMS_OUTPUT.PUT_LINE('Stock actual: ' || v_stock);
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      DBMS_OUTPUT.PUT_LINE('Producto no encontrado.');
+  END;
+
+  FUNCTION f_total_stock RETURN NUMBER IS
+    v_total NUMBER;
+  BEGIN
+    SELECT NVL(SUM(cantidad), 0) INTO v_total FROM inventario;
+    RETURN v_total;
+  END;
+
+END;
+/
+
+-- Tips:
+-- - Usa %TYPE para heredar tipos de datos de la tabla.
+-- - NVL evita problemas si no hay filas.
+-- - Puedes usar DBMS_OUTPUT para mostrar info por pantalla.
+
+--==============================================
+-- ✅ SOBRE LA ESTRUCTURA DEL EXAMEN
+--==============================================
+
+-- 1. PROCEDURE usando BD Botiga (productos, ventas, etc.)
+--    → Calcular totales, stock, precios, etc.
+
+-- 2. FUNCTION usando BD HR (empleados)
+--    → Antigüedad, salario, managers, etc.
+
+-- 3. PACKAGE usando BD HR
+--    → Combinar funciones y procedimientos sobre empleados, jobs, etc.
+
+-- CONSEJO: Revisa bien la diferencia entre RETURN y parámetros OUT.
+-- CONSEJO: Maneja bien los errores con EXCEPTION (NO_DATA_FOUND, etc.)
+
+--==============================================
+-- ✅ TIPS FINALES
+--==============================================
+-- 🔹 Usa NVL cuando uses SUM, AVG o COUNT.
+-- 🔹 Usa %TYPE para heredar el tipo exacto de columnas.
+-- 🔹 DBMS_OUTPUT.PUT_LINE sirve para mostrar información.
+-- 🔹 Si una función falla y no devuelve nada, puedes devolver -1 como error.
+-- 🔹 Usa RAISE_APPLICATION_ERROR para errores personalizados.
+-- 🔹 Revisa siempre si te piden un RETURN o un parámetro OUT.
+
+-- ¡Ánimo Denis! Tienes esto dominado, solo queda demostrarlo 💪
