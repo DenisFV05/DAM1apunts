@@ -1,0 +1,42 @@
+declare
+codi_dept number(4);
+num_treballadors number(4);
+v_ret number;
+begin
+
+--PROVA 1-departament inexistent
+codi_dept:=99;
+num_treballadors:=4;
+DBMS_OUTPUT.PUT_LINE('-- PROVA1 -- DEPARTAMENT '||codi_dept||'-- NUM TREBALLADORS: '||num_treballadors);
+v_ret:=f_dept_employees(codi_dept,num_treballadors);
+DBMS_OUTPUT.PUT_LINE('-- la funció ha retornat :'||v_ret);
+
+--PROVA 1-num treballadors incorrecte
+codi_dept:=110;
+num_treballadors:=-3;
+DBMS_OUTPUT.PUT_LINE('-- PROVA1 -- DEPARTAMENT '||codi_dept||'-- NUM TREBALLADORS: '||num_treballadors);
+v_ret:=f_dept_employees(codi_dept,num_treballadors);
+DBMS_OUTPUT.PUT_LINE('-- la funció ha retornat :'||v_ret);
+
+--PROVA 2-departament amb només un treballador que és el manager
+codi_dept:=40;
+num_treballadors:=4;
+DBMS_OUTPUT.PUT_LINE('-- PROVA2 -- DEPARTAMENT '||codi_dept||'-- NUM TREBALLADORS: '||num_treballadors);
+v_ret:=f_dept_employees(codi_dept,num_treballadors);
+DBMS_OUTPUT.PUT_LINE('-- la funció ha retornat :'||v_ret);
+
+--PROVA 3-departament amb treballadors, un d'ells el manager
+codi_dept:=50;
+num_treballadors:=6;
+DBMS_OUTPUT.PUT_LINE('-- PROVA3 -- DEPARTAMENT '||codi_dept||'-- NUM TREBALLADORS: '||num_treballadors);
+v_ret:=f_dept_employees(codi_dept,num_treballadors);
+DBMS_OUTPUT.PUT_LINE('-- la funció ha retornat :'||v_ret);
+
+--PROVA 4-departament amb treballadors, un d'ells el manager
+codi_dept:=30;
+num_treballadors:=6;
+DBMS_OUTPUT.PUT_LINE('-- PROVA4 -- DEPARTAMENT '||codi_dept||'-- NUM TREBALLADORS: '||num_treballadors);
+v_ret:=f_dept_employees(codi_dept,num_treballadors);
+DBMS_OUTPUT.PUT_LINE('-- la funció ha retornat :'||v_ret);
+
+end;
