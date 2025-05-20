@@ -152,3 +152,208 @@ END;
 -- 🔹 Revisa siempre si te piden un RETURN o un parámetro OUT.
 
 -- ¡Ánimo Denis! Tienes esto dominado, solo queda demostrarlo 💪
+
+
+
+
+-- Base de datos: HR
+-- Objetivo: Crear un procedure que liste todos los empleados de un departamento dado
+-- Parámetro: p_dept_id (NUMBER) - id del departamento
+-- La consulta muestra employee_id, first_name, last_name y job_id
+
+CREATE OR REPLACE PROCEDURE listar_empleados_dept(p_dept_id IN NUMBER) IS
+BEGIN
+    FOR r IN (
+        SELECT employee_id, first_name, last_name, job_id
+        FROM employees
+        WHERE department_id = p_dept_id
+    ) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            'ID: ' || r.employee_id || ', Nombre: ' || r.first_name || ' ' || r.last_name || ', Job: ' || r.job_id
+        );
+    END LOOP;
+END;
+/
+
+
+
+Aquí tienes una guía detallada sobre **JOINS en SQL**, con ejemplos, buenas prácticas y errores comunes. Te servirá para el examen y para cualquier consulta compleja.
+
+---
+
+## 1. ¿Qué es un JOIN?
+
+Un **JOIN** te permite combinar filas de dos (o más) tablas en función de una columna relacionada. Es fundamental en SQL relacional para **extraer datos de varios orígenes** en una sola consulta.
+
+---
+
+## 2. Tipos de JOINs
+
+| JOIN           | Descripción                                                                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **INNER JOIN** | Devuelve solo las filas que tienen coincidencia en ambas tablas.                                                                               |
+| **LEFT JOIN**  | (o **LEFT OUTER JOIN**) Devuelve todas las filas de la tabla izquierda y las coincidencias de la derecha; rellena con NULL donde no hay match. |
+| **RIGHT JOIN** | (o **RIGHT OUTER JOIN**) Simétrico al LEFT, todas las de la derecha y las coincidencias de la izquierda.                                       |
+| **FULL JOIN**  | (o **FULL OUTER JOIN**) Devuelve todas las filas de ambas tablas, rellenando con NULL donde no haya coincidencia.                              |
+| **CROSS JOIN** | Producto cartesiano de ambas tablas: cada fila de A se combina con cada fila de B.                                                             |
+
+---
+
+## 3. Sintaxis básica
+
+```sql
+SELECT a.col1, b.col2
+  FROM tablaA a
+  JOIN tablaB b
+    ON a.campo_relacion = b.campo_relacion;
+```
+
+> En Oracle (y muchas otras bases) puedes usar **INNER JOIN** o simplemente **JOIN**.
+
+---
+
+## 4. Ejemplos prácticos con la base HR
+
+### 4.1 INNER JOIN
+
+Listar empleados con su departamento:
+
+```sql
+SELECT e.employee_id,
+       e.first_name || ' ' || e.last_name AS nombre,
+       d.department_name
+  FROM employees e
+  JOIN departments d
+    ON e.department_id = d.department_id;
+```
+
+* Solo muestra empleados que **tienen** departamento asignado.
+
+---
+
+### 4.2 LEFT OUTER JOIN
+
+Incluir departamentos aunque no tengan empleados:
+
+```sql
+SELECT d.department_id,
+       d.department_name,
+       e.employee_id
+  FROM departments d
+  LEFT JOIN employees e
+    ON d.department_id = e.department_id;
+```
+
+* Todos los departamentos, con `employee_id = NULL` si no hay empleados.
+
+---
+
+### 4.3 RIGHT OUTER JOIN
+
+(Invertir izquierda/derecha; en Oracle a veces menos usado)
+
+```sql
+SELECT e.employee_id, e.first_name, l.city
+  FROM employees e
+  RIGHT JOIN locations l
+    ON e.location_id = l.location_id;
+```
+
+* Muestra todas las ubicaciones, incluyendo aquellas sin empleados (`employee_id = NULL`).
+
+---
+
+### 4.4 FULL OUTER JOIN
+
+Unirlo todo, muy útil para auditorías:
+
+```sql
+SELECT e.employee_id, e.first_name, d.department_name
+  FROM employees e
+  FULL JOIN departments d
+    ON e.department_id = d.department_id;
+```
+
+* Verás empleados sin departamento y departamentos sin empleados.
+
+---
+
+### 4.5 CROSS JOIN
+
+Cuidado con el tamaño:
+
+```sql
+SELECT e.employee_id, p.product_name
+  FROM employees e
+  CROSS JOIN products p;
+```
+
+* Si `employees` tiene 100 filas y `products` 200, el resultado tendrá 20,000 filas.
+
+---
+
+## 5. Buenas prácticas
+
+1. **Siempre especifica el tipo de JOIN** (INNER, LEFT, etc.) para que tu intención quede clara.
+2. Usa **alias cortos** (`e`, `d`) para mejorar legibilidad.
+3. **Pon las condiciones de JOIN en el `ON`**, y deja el `WHERE` para filtros adicionales:
+
+   ```sql
+   SELECT ...
+     FROM a
+     JOIN b ON a.id = b.id
+    WHERE a.fecha >= DATE '2025-01-01';
+   ```
+4. **Evita cross joins accidentales**: si omites el `ON`, hacer `FROM A, B` se interpreta como producto cartesiano.
+5. Para evitar duplicados, revisa si necesitas `DISTINCT` (aunque cuidado con el coste).
+6. Utiliza índices en columnas de JOIN para mejorar rendimiento.
+
+---
+
+## 6. Errores comunes
+
+* **Confundir WHERE y ON**:
+
+  ```sql
+  -- MAL: convierte un LEFT JOIN en un INNER JOIN
+  SELECT ... 
+    FROM A LEFT JOIN B 
+   WHERE B.col IS NOT NULL;
+  ```
+
+  En su lugar:
+
+  ```sql
+  SELECT ... 
+    FROM A LEFT JOIN B 
+      ON A.id = B.id AND B.col IS NOT NULL;
+  ```
+
+* **No manejar NULLs** cuando comparas claves.
+
+* **Usar SELECT \* con JOIN masivo** puede traer columnas duplicadas o confusas.
+
+---
+
+## 7. Ejercicio de práctica
+
+> **Objetivo**: Listar cada empleado con su manager (si lo tiene) y con el nombre del departamento.
+
+```sql
+SELECT e.employee_id,
+       e.first_name || ' ' || e.last_name AS empleado,
+       m.first_name || ' ' || m.last_name AS manager,
+       d.department_name
+  FROM employees e
+  LEFT JOIN employees m
+    ON e.manager_id = m.employee_id
+  JOIN departments d
+    ON e.department_id = d.department_id;
+```
+
+* Fíjate en el **self-join** sobre `employees` para obtener al manager.
+* Se usa `LEFT JOIN` para no descartar empleados sin manager.
+
+---
+
+Con esta guía tienes un repaso completo de **qué es cada JOIN**, ejemplos concretos en HR, **buenas prácticas** y **errores que debes evitar**. ¡A practicar!
